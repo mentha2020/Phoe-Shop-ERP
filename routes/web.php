@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\PurchaseOrderController;
 use App\Http\Controllers\Admin\PosController;
 use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\QuotationController;
+use App\Http\Controllers\Admin\RepairController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 
@@ -120,7 +121,16 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('/quotations/{quotation}/status', [QuotationController::class, 'updateStatus'])->name('quotations.status');
     Route::post('/quotations/{quotation}/convert', [QuotationController::class, 'convertToSale'])->name('quotations.convert');
     Route::delete('/quotations/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.destroy');
-    Route::get('/repairs', fn() => view('dashboard'))->name('repairs.index');
+    // Repairs
+    Route::get('/repairs', [RepairController::class, 'index'])->name('repairs.index');
+    Route::get('/repairs/create', [RepairController::class, 'create'])->name('repairs.create');
+    Route::post('/repairs', [RepairController::class, 'store'])->name('repairs.store');
+    Route::get('/repairs/{repair}', [RepairController::class, 'show'])->name('repairs.show');
+    Route::put('/repairs/{repair}', [RepairController::class, 'update'])->name('repairs.update');
+    Route::post('/repairs/{repair}/status', [RepairController::class, 'updateStatus'])->name('repairs.status');
+    Route::post('/repairs/{repair}/parts', [RepairController::class, 'addPart'])->name('repairs.part.add');
+    Route::delete('/repairs/parts/{part}', [RepairController::class, 'removePart'])->name('repairs.part.remove');
+    Route::post('/repairs/{repair}/deposit', [RepairController::class, 'recordDeposit'])->name('repairs.deposit');
     Route::get('/accounting', fn() => view('dashboard'))->name('accounting.index');
     Route::get('/expenses', fn() => view('dashboard'))->name('expenses.index');
     Route::get('/reports/sales', fn() => view('dashboard'))->name('reports.sales');
