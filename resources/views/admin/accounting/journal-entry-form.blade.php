@@ -107,7 +107,9 @@
         </div>
     </form>
 </div>
+@endsection
 
+@push('scripts')
 <script>
 const bankAccounts = @json($bankAccounts);
 let itemCount = 0;
@@ -169,4 +171,4 @@ function calculateTotals() {
 addItem();
 addItem();
 </script>
-@endsection
+@endpush

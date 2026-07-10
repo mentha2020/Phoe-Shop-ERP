@@ -129,7 +129,9 @@
         </div>
     </div>
 </div>
+@endsection
 
+@push('scripts')
 <script>
 function toggleAll(checkbox) {
     document.querySelectorAll('.item-check').forEach(cb => {
@@ -167,4 +169,4 @@ function calculateReturn() {
     document.getElementById('submitBtn').disabled = total <= 0;
 }
 </script>
-@endsection
+@endpush

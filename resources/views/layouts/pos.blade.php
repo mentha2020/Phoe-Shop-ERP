@@ -36,6 +36,36 @@
             </div>
         </div>
     @endif
+    @if(session('error'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+            <div class="toast show align-items-center text-bg-danger border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">{{ session('error') }}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="this.closest('.toast').remove()"></button>
+                </div>
+            </div>
+        </div>
+    @endif
+    @if(session('warning'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+            <div class="toast show align-items-center text-bg-warning border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">{{ session('warning') }}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="this.closest('.toast').remove()"></button>
+                </div>
+            </div>
+        </div>
+    @endif
+    @if(session('info'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+            <div class="toast show align-items-center text-bg-info border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">{{ session('info') }}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="this.closest('.toast').remove()"></button>
+                </div>
+            </div>
+        </div>
+    @endif
 
     @yield('content')
 

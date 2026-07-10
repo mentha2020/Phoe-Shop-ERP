@@ -20,13 +20,9 @@
                         <i class="bi bi-cart-check"></i>
                     </div>
                     <div>
-                        <div class="card-stat-value" id="todaySales">0</div>
+                        <div class="card-stat-value">${{ number_format($todaySales, 2) }}</div>
                         <div class="card-stat-label">Sales Today</div>
                     </div>
-                </div>
-                <div class="mt-3">
-                    <span class="card-stat-change up"><i class="bi bi-arrow-up"></i> +12.5%</span>
-                    <span class="text-muted small ms-1">vs yesterday</span>
                 </div>
             </div>
         </div>
@@ -40,13 +36,9 @@
                         <i class="bi bi-currency-dollar"></i>
                     </div>
                     <div>
-                        <div class="card-stat-value" id="monthRevenue">$0</div>
+                        <div class="card-stat-value">${{ number_format($monthRevenue, 2) }}</div>
                         <div class="card-stat-label">Revenue This Month</div>
                     </div>
-                </div>
-                <div class="mt-3">
-                    <span class="card-stat-change up"><i class="bi bi-arrow-up"></i> +8.2%</span>
-                    <span class="text-muted small ms-1">vs last month</span>
                 </div>
             </div>
         </div>
@@ -60,12 +52,12 @@
                         <i class="bi bi-box-seam"></i>
                     </div>
                     <div>
-                        <div class="card-stat-value" id="totalProducts">0</div>
+                        <div class="card-stat-value">{{ $totalProducts }}</div>
                         <div class="card-stat-label">Total Products</div>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <span class="text-muted small"><i class="bi bi-exclamation-circle text-warning"></i> <span id="lowStockCount">0</span> low stock</span>
+                    <span class="text-muted small"><i class="bi bi-exclamation-circle text-warning"></i> {{ $lowStockCount }} low stock</span>
                 </div>
             </div>
         </div>
@@ -79,43 +71,13 @@
                         <i class="bi bi-tools"></i>
                     </div>
                     <div>
-                        <div class="card-stat-value" id="pendingRepairs">0</div>
+                        <div class="card-stat-value">{{ $pendingRepairs }}</div>
                         <div class="card-stat-label">Pending Repairs</div>
                     </div>
                 </div>
                 <div class="mt-3">
                     <span class="text-muted small"><i class="bi bi-clock"></i> Awaiting pickup</span>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- Charts Row --}}
-<div class="row g-4 mb-4">
-    <div class="col-xl-8">
-        <div class="card h-100">
-            <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center">
-                <h6 class="card-title fw-bold mb-0">Sales Overview</h6>
-                <select class="form-select form-select-sm w-auto" id="salesPeriod">
-                    <option value="week">This Week</option>
-                    <option value="month" selected>This Month</option>
-                    <option value="year">This Year</option>
-                </select>
-            </div>
-            <div class="card-body">
-                <canvas id="salesChart" height="280"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4">
-        <div class="card h-100">
-            <div class="card-header bg-transparent border-0">
-                <h6 class="card-title fw-bold mb-0">Top Brands</h6>
-            </div>
-            <div class="card-body">
-                <canvas id="brandsChart" height="280"></canvas>
             </div>
         </div>
     </div>
@@ -140,10 +102,17 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="recentSales">
-                            <tr>
-                                <td colspan="4" class="text-center text-muted py-4">Loading...</td>
-                            </tr>
+                        <tbody>
+                            @forelse($recentSales as $sale)
+                                <tr>
+                                    <td><a href="{{ route('admin.sales.show', $sale->id) }}" class="text-decoration-none">{{ $sale->invoice_number }}</a></td>
+                                    <td>{{ $sale->customer?->name ?? 'Walk-in' }}</td>
+                                    <td>${{ number_format($sale->total, 2) }}</td>
+                                    <td><span class="badge bg-{{ $sale->status === 'completed' ? 'success' : ($sale->status === 'cancelled' ? 'danger' : 'warning') }}">{{ ucfirst($sale->status) }}</span></td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="4" class="text-center text-muted py-4">No sales yet</td></tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -167,10 +136,16 @@
                                 <th>Revenue</th>
                             </tr>
                         </thead>
-                        <tbody id="topProducts">
-                            <tr>
-                                <td colspan="3" class="text-center text-muted py-4">Loading...</td>
-                            </tr>
+                        <tbody>
+                            @forelse($topProducts as $item)
+                                <tr>
+                                    <td>{{ $item->product?->name ?? 'N/A' }}</td>
+                                    <td>{{ $item->total_sold }}</td>
+                                    <td>${{ number_format($item->total_revenue, 2) }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="3" class="text-center text-muted py-4">No products sold yet</td></tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

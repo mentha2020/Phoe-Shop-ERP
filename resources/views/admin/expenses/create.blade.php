@@ -109,11 +109,13 @@
         </div>
     </div>
 </div>
+@endsection
 
+@push('scripts')
 <script>
 function toggleRecurring() {
     document.getElementById('recurringFreq').style.display =
         document.getElementById('isRecurring').value === '1' ? 'block' : 'none';
 }
 </script>
-@endsection
+@endpush

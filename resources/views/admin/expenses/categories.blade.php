@@ -52,43 +52,7 @@
                                         @endif
                                     </td>
                                 </tr>
-
-                                <!-- Edit Modal -->
-                                <div class="modal fade" id="editModal{{ $category->id }}" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <form action="{{ route('admin.expenses.category.update', $category->id) }}" method="POST">
-                                                @csrf @method('PUT')
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Edit Category</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Name</label>
-                                                        <input type="text" name="name" class="form-control" value="{{ $category->name }}" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Description</label>
-                                                        <input type="text" name="description" class="form-control" value="{{ $category->description }}">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Active</label>
-                                                        <select name="is_active" class="form-select">
-                                                            <option value="1" {{ $category->is_active ? 'selected' : '' }}>Yes</option>
-                                                            <option value="0" {{ !$category->is_active ? 'selected' : '' }}>No</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                    <button type="submit" class="btn btn-primary">Update</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
+@endforeach
                             </tbody>
                         </table>
                     </div>
@@ -126,4 +90,41 @@
         </div>
     </div>
 </div>
+
+@foreach($categories as $category)
+<div class="modal fade" id="editModal{{ $category->id }}" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('admin.expenses.category.update', $category->id) }}" method="POST">
+                @csrf @method('PUT')
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control" value="{{ $category->name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <input type="text" name="description" class="form-control" value="{{ $category->description }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Active</label>
+                        <select name="is_active" class="form-select">
+                            <option value="1" {{ $category->is_active ? 'selected' : '' }}>Yes</option>
+                            <option value="0" {{ !$category->is_active ? 'selected' : '' }}>No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
 @endsection

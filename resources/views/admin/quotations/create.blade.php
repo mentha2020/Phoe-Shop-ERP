@@ -124,7 +124,9 @@
         </div>
     </form>
 </div>
+@endsection
 
+@push('scripts')
 <script>
 const products = @json($products);
 let itemCount = 0;
@@ -197,4 +199,4 @@ function calculateTotal() {
 // Add first item
 addItem();
 </script>
-@endsection
+@endpush

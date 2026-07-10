@@ -9,6 +9,7 @@ use App\Models\SalePayment;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Stock;
+use App\Models\StockMovement;
 use App\Models\Branch;
 use App\Models\Customer;
 use Illuminate\Http\Request;

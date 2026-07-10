@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('notes')->nullable();
             $table->uuid('processed_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('sale_id')->references('id')->on('sales');
             $table->foreign('processed_by')->references('id')->on('users')->nullOnDelete();
