@@ -8,14 +8,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, SoftDeletes, LogsActivity, InteractsWithMedia;
 
     protected $keyType = 'string';
     public $incrementing = false;
     protected $guarded = [];
+
+    protected $casts = [
+        'purchase_price' => 'decimal:2',
+        'selling_price' => 'decimal:2',
+    ];
 
     protected static function boot()
     {
@@ -52,6 +59,25 @@ class Product extends Model
         return $this->hasMany(Stock::class);
     }
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('product-images')
+            ->useDisk('public')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumbnail')
+            ->width(150)
+            ->height(150)
+            ->sharpen(10);
+
+        $this->addMediaConversion('medium')
+            ->width(400)
+            ->height(400);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()->logOnly(['name', 'selling_price', 'purchase_price'])->logOnlyDirty()->dontSubmitEmptyLogs();
@@ -73,5 +99,10 @@ class Product extends Model
             return round((($this->selling_price - $this->purchase_price) / $this->purchase_price) * 100, 2);
         }
         return 0;
+    }
+
+    public function getMainImageAttribute()
+    {
+        return $this->getFirstMediaUrl('product-images', 'thumbnail') ?: null;
     }
 }

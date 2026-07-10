@@ -4,13 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Brand;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with(['brand', 'category']);
+        $query = Product::with(['brand', 'category', 'media']);
 
         if ($request->has('search') && $request->search) {
             $query->where(function ($q) use ($request) {
@@ -28,14 +32,23 @@ class ProductController extends Controller
             $query->where('brand_id', $request->brand);
         }
 
-        $products = $query->latest()->paginate(20);
+        if ($request->has('status') && $request->status !== '') {
+            $query->where('is_active', $request->status === 'active');
+        }
 
-        return view('admin.product.index', compact('products'));
+        $products = $query->latest()->paginate(20);
+        $brands = Brand::orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
+
+        return view('admin.product.index', compact('products', 'brands', 'categories'));
     }
 
     public function create()
     {
-        return view('admin.product.create');
+        $brands = Brand::orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
+
+        return view('admin.product.create', compact('brands', 'categories'));
     }
 
     public function store(Request $request)
@@ -49,23 +62,46 @@ class ProductController extends Controller
             'purchase_price' => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
+            'is_active' => 'boolean',
+            'image' => 'nullable|image|max:2048',
         ]);
 
-        $validated['id'] = \Illuminate\Support\Str::uuid();
-        Product::create($validated);
+        $validated['id'] = Str::uuid();
+        $validated['is_active'] = $request->boolean('is_active');
+
+        $product = Product::create($validated);
+
+        if ($request->hasFile('image')) {
+            $product->addMediaFromRequest('image')->toMediaCollection('product-images');
+        }
+
+        activity('product')
+            ->performedOn($product)
+            ->causedBy(auth()->user())
+            ->log('Created product: ' . $product->name);
 
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
 
     public function show(Product $product)
     {
-        $product->load(['brand', 'category', 'variants']);
-        return view('admin.product.show', compact('product'));
+        $product->load(['brand', 'category', 'variants', 'media']);
+        $activityLogs = activity('product')
+            ->performedOn($product)
+            ->latest()
+            ->limit(10)
+            ->get();
+
+        return view('admin.product.show', compact('product', 'activityLogs'));
     }
 
     public function edit(Product $product)
     {
-        return view('admin.product.edit', compact('product'));
+        $brands = Brand::orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
+        $product->load('media');
+
+        return view('admin.product.edit', compact('product', 'brands', 'categories'));
     }
 
     public function update(Request $request, Product $product)
@@ -80,16 +116,43 @@ class ProductController extends Controller
             'selling_price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'is_active' => 'boolean',
+            'image' => 'nullable|image|max:2048',
         ]);
 
+        $validated['is_active'] = $request->boolean('is_active');
         $product->update($validated);
+
+        if ($request->hasFile('image')) {
+            $product->clearMediaCollection('product-images');
+            $product->addMediaFromRequest('image')->toMediaCollection('product-images');
+        }
+
+        activity('product')
+            ->performedOn($product)
+            ->causedBy(auth()->user())
+            ->log('Updated product: ' . $product->name);
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
 
     public function destroy(Product $product)
     {
+        $productName = $product->name;
+        $product->clearMediaCollection('product-images');
         $product->delete();
+
+        activity('product')
+            ->causedBy(auth()->user())
+            ->withProperties(['deleted_product' => $productName])
+            ->log('Deleted product: ' . $productName);
+
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
+    }
+
+    public function destroyMedia(Product $product, Media $media)
+    {
+        $media->delete();
+
+        return back()->with('success', 'Image deleted successfully.');
     }
 }

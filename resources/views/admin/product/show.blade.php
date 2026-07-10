@@ -23,13 +23,22 @@
 
 <div class="row g-4">
     <div class="col-lg-8">
-        <div class="card glass">
-            <div class="card-header bg-transparent border-0 py-3">
-                <h6 class="card-title fw-bold mb-0">Product Information</h6>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom">
+                <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Product Information</h5>
             </div>
             <div class="card-body">
                 <div class="row g-4">
-                    <div class="col-md-6">
+                    <div class="col-md-3 text-center">
+                        @if($product->getFirstMedia('product-images'))
+                            <img src="{{ $product->getFirstMediaUrl('product-images', 'medium') }}" class="rounded mb-2" style="max-height: 150px; width: 100%; object-fit: cover;" alt="{{ $product->name }}">
+                        @else
+                            <div class="bg-light rounded d-inline-flex align-items-center justify-content-center mb-2" style="width: 150px; height: 150px;">
+                                <i class="bi bi-image text-muted" style="font-size: 2rem;"></i>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-md-9">
                         <div class="mb-3">
                             <label class="form-label fw-medium text-muted small">Product Name</label>
                             <div class="fw-semibold">{{ $product->name }}</div>

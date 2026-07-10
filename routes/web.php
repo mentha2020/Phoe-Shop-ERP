@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Master\CategoryController;
 use App\Http\Controllers\Admin\Master\CustomerController;
 use App\Http\Controllers\Admin\Master\SupplierController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,13 +27,13 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar');
     Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
-    // User Management - requires users.view permission
+    // User Management
     Route::middleware('permission:users.view')->group(function () {
         Route::resource('users', UserController::class)->except(['show']);
         Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
     });
 
-    // Role Management - requires roles.view permission
+    // Role Management
     Route::middleware('permission:roles.view')->group(function () {
         Route::resource('roles', RoleController::class)->except(['show']);
     });
@@ -61,12 +62,24 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Products
     Route::middleware('permission:products.view')->group(function () {
         Route::resource('products', ProductController::class);
+        Route::delete('products/{product}/media/{media}', [ProductController::class, 'destroyMedia'])->name('products.media.destroy');
+    });
+
+    // Stock Management
+    Route::middleware('permission:inventory.view')->group(function () {
+        Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
+        Route::post('/stock', [StockController::class, 'store'])->name('stock.store');
+        Route::get('/stock/movements', [StockController::class, 'movements'])->name('stock.movements');
+        Route::get('/stock-adjustments', [StockController::class, 'adjustments'])->name('stock-adjustments.index');
+        Route::get('/stock-adjustments/create', [StockController::class, 'adjustmentCreate'])->name('stock-adjustments.create');
+        Route::post('/stock-adjustments', [StockController::class, 'adjustmentStore'])->name('stock-adjustments.store');
+        Route::get('/stock-transfers', [StockController::class, 'transfers'])->name('stock-transfers.index');
+        Route::get('/stock-transfers/create', [StockController::class, 'transferCreate'])->name('stock-transfers.create');
+        Route::post('/stock-transfers', [StockController::class, 'transferStore'])->name('stock-transfers.store');
+        Route::post('/stock-transfers/{transfer}/receive', [StockController::class, 'transferReceive'])->name('stock-transfers.receive');
     });
 
     // Placeholder routes
-    Route::get('/stock', fn() => view('dashboard'))->name('stock.index');
-    Route::get('/stock-transfers', fn() => view('dashboard'))->name('stock-transfers.index');
-    Route::get('/stock-adjustments', fn() => view('dashboard'))->name('stock-adjustments.index');
     Route::get('/purchase-orders', fn() => view('dashboard'))->name('purchase-orders.index');
     Route::get('/pos', fn() => view('dashboard'))->name('pos.index');
     Route::get('/sales', fn() => view('dashboard'))->name('sales.index');
