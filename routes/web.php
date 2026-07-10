@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\QuotationController;
 use App\Http\Controllers\Admin\RepairController;
 use App\Http\Controllers\Admin\AccountingController;
+use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 
@@ -147,7 +148,17 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('/accounting/journal-entries/{entry}/post', [AccountingController::class, 'journalEntryPost'])->name('accounting.journal-entry-post');
     Route::post('/accounting/journal-entries/{entry}/void', [AccountingController::class, 'journalEntryVoid'])->name('accounting.journal-entry-void');
     Route::get('/accounting/trial-balance', [AccountingController::class, 'trialBalance'])->name('accounting.trial-balance');
-    Route::get('/expenses', fn() => view('dashboard'))->name('expenses.index');
+    // Expenses
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
+    Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
+    Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
+    Route::get('/expenses/{expense}', [ExpenseController::class, 'show'])->name('expenses.show');
+    Route::post('/expenses/{expense}/status', [ExpenseController::class, 'updateStatus'])->name('expenses.status');
+    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
+    Route::get('/expenses/categories/all', [ExpenseController::class, 'categories'])->name('expenses.categories');
+    Route::post('/expenses/categories', [ExpenseController::class, 'categoryStore'])->name('expenses.category.store');
+    Route::put('/expenses/categories/{category}', [ExpenseController::class, 'categoryUpdate'])->name('expenses.category.update');
+    Route::delete('/expenses/categories/{category}', [ExpenseController::class, 'categoryDestroy'])->name('expenses.category.destroy');
     Route::get('/reports/sales', fn() => view('dashboard'))->name('reports.sales');
     Route::get('/settings', fn() => view('dashboard'))->name('settings.index');
 });
