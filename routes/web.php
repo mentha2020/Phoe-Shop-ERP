@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\QuotationController;
 use App\Http\Controllers\Admin\RepairController;
 use App\Http\Controllers\Admin\AccountingController;
 use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 
@@ -159,7 +160,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('/expenses/categories', [ExpenseController::class, 'categoryStore'])->name('expenses.category.store');
     Route::put('/expenses/categories/{category}', [ExpenseController::class, 'categoryUpdate'])->name('expenses.category.update');
     Route::delete('/expenses/categories/{category}', [ExpenseController::class, 'categoryDestroy'])->name('expenses.category.destroy');
-    Route::get('/reports/sales', fn() => view('dashboard'))->name('reports.sales');
+    // Reports
+    Route::get('/reports/sales', [ReportController::class, 'salesReport'])->name('reports.sales');
+    Route::get('/reports/inventory', [ReportController::class, 'inventoryReport'])->name('reports.inventory');
+    Route::get('/reports/financial', [ReportController::class, 'financialReport'])->name('reports.financial');
     Route::get('/settings', fn() => view('dashboard'))->name('settings.index');
 });
 
