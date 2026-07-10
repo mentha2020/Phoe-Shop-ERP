@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\RepairController;
 use App\Http\Controllers\Admin\AccountingController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 
@@ -164,7 +165,13 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/reports/sales', [ReportController::class, 'salesReport'])->name('reports.sales');
     Route::get('/reports/inventory', [ReportController::class, 'inventoryReport'])->name('reports.inventory');
     Route::get('/reports/financial', [ReportController::class, 'financialReport'])->name('reports.financial');
-    Route::get('/settings', fn() => view('dashboard'))->name('settings.index');
+    // Settings
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::get('/settings/notifications', [SettingController::class, 'notifications'])->name('settings.notifications');
+    Route::put('/settings/notifications', [SettingController::class, 'updateNotification'])->name('settings.notifications.update');
+    Route::get('/settings/profile', [SettingController::class, 'profile'])->name('settings.profile');
+    Route::put('/settings/profile', [SettingController::class, 'updateProfile'])->name('settings.profile.update');
 });
 
 require __DIR__.'/auth.php';
