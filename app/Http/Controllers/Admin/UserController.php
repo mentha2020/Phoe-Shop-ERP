@@ -70,7 +70,11 @@ class UserController extends Controller
 
         $user->assignRole($validated['role']);
 
-        activity('user')->performedOn($user)->causedBy(auth()->user())->log('Created user: ' . $user->name);
+        activity('user')
+            ->performedOn($user)
+            ->causedBy(auth()->user())
+            ->withProperties(['role' => $validated['role'], 'status' => $validated['status']])
+            ->log('Created user: ' . $user->name);
 
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
@@ -78,7 +82,13 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user->load('branch', 'roles', 'permissions');
-        return view('admin.user.show', compact('user'));
+        $activityLogs = activity('user')
+            ->performedOn($user)
+            ->latest()
+            ->limit(20)
+            ->get();
+
+        return view('admin.user.show', compact('user', 'activityLogs'));
     }
 
     public function edit(User $user)
@@ -102,6 +112,8 @@ class UserController extends Controller
             'status' => 'required|in:active,inactive,suspended',
         ]);
 
+        $oldData = $user->only(['name', 'email', 'phone', 'status']);
+
         $data = [
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -117,7 +129,11 @@ class UserController extends Controller
         $user->update($data);
         $user->syncRoles([$validated['role']]);
 
-        activity('user')->performedOn($user)->causedBy(auth()->user())->log('Updated user: ' . $user->name);
+        activity('user')
+            ->performedOn($user)
+            ->causedBy(auth()->user())
+            ->withProperties(['old' => $oldData, 'new' => $data, 'role' => $validated['role']])
+            ->log('Updated user: ' . $user->name);
 
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
@@ -128,9 +144,13 @@ class UserController extends Controller
             return back()->with('error', 'You cannot delete your own account.');
         }
 
+        $userName = $user->name;
         $user->delete();
 
-        activity('user')->performedOn($user)->causedBy(auth()->user())->log('Deleted user: ' . $user->name);
+        activity('user')
+            ->causedBy(auth()->user())
+            ->withProperties(['deleted_user' => $userName])
+            ->log('Deleted user: ' . $userName);
 
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
     }

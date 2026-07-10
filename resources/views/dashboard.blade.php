@@ -1,4 +1,6 @@
-@extends('layouts.auth', ['title' => 'Dashboard'])
+@extends('layouts.app')
+
+@section('title', 'Dashboard')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
