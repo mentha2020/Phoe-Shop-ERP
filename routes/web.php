@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\Master\CustomerController;
 use App\Http\Controllers\Admin\Master\SupplierController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StockController;
+use App\Http\Controllers\Admin\PurchaseOrderController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 
@@ -79,8 +80,19 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Route::post('/stock-transfers/{transfer}/receive', [StockController::class, 'transferReceive'])->name('stock-transfers.receive');
     });
 
+    // Purchase Orders
+    Route::middleware('permission:purchase.view')->group(function () {
+        Route::get('/purchase-orders', [PurchaseOrderController::class, 'index'])->name('purchase-orders.index');
+        Route::get('/purchase-orders/create', [PurchaseOrderController::class, 'create'])->name('purchase-orders.create');
+        Route::post('/purchase-orders', [PurchaseOrderController::class, 'store'])->name('purchase-orders.store');
+        Route::get('/purchase-orders/{order}', [PurchaseOrderController::class, 'show'])->name('purchase-orders.show');
+        Route::post('/purchase-orders/{order}/approve', [PurchaseOrderController::class, 'approve'])->name('purchase-orders.approve');
+        Route::post('/purchase-orders/{order}/receive', [PurchaseOrderController::class, 'receive'])->name('purchase-orders.receive');
+        Route::post('/purchase-orders/{order}/cancel', [PurchaseOrderController::class, 'cancel'])->name('purchase-orders.cancel');
+        Route::post('/purchase-orders/{order}/payment', [PurchaseOrderController::class, 'recordPayment'])->name('purchase-orders.payment');
+    });
+
     // Placeholder routes
-    Route::get('/purchase-orders', fn() => view('dashboard'))->name('purchase-orders.index');
     Route::get('/pos', fn() => view('dashboard'))->name('pos.index');
     Route::get('/sales', fn() => view('dashboard'))->name('sales.index');
     Route::get('/quotations', fn() => view('dashboard'))->name('quotations.index');
