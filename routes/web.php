@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Master\SupplierController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\PurchaseOrderController;
+use App\Http\Controllers\Admin\PosController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 
@@ -92,8 +93,15 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Route::post('/purchase-orders/{order}/payment', [PurchaseOrderController::class, 'recordPayment'])->name('purchase-orders.payment');
     });
 
+    // POS System
+    Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
+    Route::get('/pos/search-products', [PosController::class, 'searchProducts'])->name('pos.search-products');
+    Route::post('/pos', [PosController::class, 'store'])->name('pos.store');
+    Route::get('/pos/{id}/receipt', [PosController::class, 'receipt'])->name('pos.receipt');
+    Route::get('/pos/history', [PosController::class, 'history'])->name('pos.history');
+    Route::post('/pos/{sale}/cancel', [PosController::class, 'cancel'])->name('pos.cancel');
+
     // Placeholder routes
-    Route::get('/pos', fn() => view('dashboard'))->name('pos.index');
     Route::get('/sales', fn() => view('dashboard'))->name('sales.index');
     Route::get('/quotations', fn() => view('dashboard'))->name('quotations.index');
     Route::get('/repairs', fn() => view('dashboard'))->name('repairs.index');
