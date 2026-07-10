@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\PurchaseOrderController;
 use App\Http\Controllers\Admin\PosController;
 use App\Http\Controllers\Admin\SaleController;
+use App\Http\Controllers\Admin\QuotationController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 
@@ -110,7 +111,15 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('/sales/{sale}/return', [SaleController::class, 'storeReturn'])->name('sales.return-store');
     Route::get('/customers/{customer}/ledger', [SaleController::class, 'customerLedger'])->name('sales.customer-ledger');
     Route::post('/customers/{customer}/payment', [SaleController::class, 'recordCustomerPayment'])->name('sales.customer-payment');
-    Route::get('/quotations', fn() => view('dashboard'))->name('quotations.index');
+    // Quotations
+    Route::get('/quotations', [QuotationController::class, 'index'])->name('quotations.index');
+    Route::get('/quotations/create', [QuotationController::class, 'create'])->name('quotations.create');
+    Route::post('/quotations', [QuotationController::class, 'store'])->name('quotations.store');
+    Route::get('/quotations/{quotation}', [QuotationController::class, 'show'])->name('quotations.show');
+    Route::put('/quotations/{quotation}', [QuotationController::class, 'update'])->name('quotations.update');
+    Route::post('/quotations/{quotation}/status', [QuotationController::class, 'updateStatus'])->name('quotations.status');
+    Route::post('/quotations/{quotation}/convert', [QuotationController::class, 'convertToSale'])->name('quotations.convert');
+    Route::delete('/quotations/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.destroy');
     Route::get('/repairs', fn() => view('dashboard'))->name('repairs.index');
     Route::get('/accounting', fn() => view('dashboard'))->name('accounting.index');
     Route::get('/expenses', fn() => view('dashboard'))->name('expenses.index');
