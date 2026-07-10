@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PosController;
 use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\QuotationController;
 use App\Http\Controllers\Admin\RepairController;
+use App\Http\Controllers\Admin\AccountingController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 
@@ -131,7 +132,21 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('/repairs/{repair}/parts', [RepairController::class, 'addPart'])->name('repairs.part.add');
     Route::delete('/repairs/parts/{part}', [RepairController::class, 'removePart'])->name('repairs.part.remove');
     Route::post('/repairs/{repair}/deposit', [RepairController::class, 'recordDeposit'])->name('repairs.deposit');
-    Route::get('/accounting', fn() => view('dashboard'))->name('accounting.index');
+    // Accounting & Finance
+    Route::get('/accounting', [AccountingController::class, 'index'])->name('accounting.index');
+    Route::get('/accounting/bank-accounts', [AccountingController::class, 'bankAccounts'])->name('accounting.bank-accounts');
+    Route::get('/accounting/bank-accounts/create', [AccountingController::class, 'bankAccountCreate'])->name('accounting.bank-accounts.create');
+    Route::post('/accounting/bank-accounts', [AccountingController::class, 'bankAccountStore'])->name('accounting.bank-accounts.store');
+    Route::get('/accounting/bank-accounts/{bankAccount}/edit', [AccountingController::class, 'bankAccountEdit'])->name('accounting.bank-accounts.edit');
+    Route::put('/accounting/bank-accounts/{bankAccount}', [AccountingController::class, 'bankAccountUpdate'])->name('accounting.bank-accounts.update');
+    Route::delete('/accounting/bank-accounts/{bankAccount}', [AccountingController::class, 'bankAccountDestroy'])->name('accounting.bank-accounts.destroy');
+    Route::get('/accounting/journal-entries', [AccountingController::class, 'journalEntries'])->name('accounting.journal-entries');
+    Route::get('/accounting/journal-entries/create', [AccountingController::class, 'journalEntryCreate'])->name('accounting.journal-entries.create');
+    Route::post('/accounting/journal-entries', [AccountingController::class, 'journalEntryStore'])->name('accounting.journal-entries.store');
+    Route::get('/accounting/journal-entries/{entry}', [AccountingController::class, 'journalEntryShow'])->name('accounting.journal-entry-show');
+    Route::post('/accounting/journal-entries/{entry}/post', [AccountingController::class, 'journalEntryPost'])->name('accounting.journal-entry-post');
+    Route::post('/accounting/journal-entries/{entry}/void', [AccountingController::class, 'journalEntryVoid'])->name('accounting.journal-entry-void');
+    Route::get('/accounting/trial-balance', [AccountingController::class, 'trialBalance'])->name('accounting.trial-balance');
     Route::get('/expenses', fn() => view('dashboard'))->name('expenses.index');
     Route::get('/reports/sales', fn() => view('dashboard'))->name('reports.sales');
     Route::get('/settings', fn() => view('dashboard'))->name('settings.index');
