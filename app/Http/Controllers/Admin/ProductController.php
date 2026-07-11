@@ -68,7 +68,9 @@ class ProductController extends Controller
 
         $validated['id'] = Str::uuid();
         $validated['is_active'] = $request->boolean('is_active');
+        $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
 
+        unset($validated['image']);
         $product = Product::create($validated);
 
         if ($request->hasFile('image')) {
@@ -86,8 +88,9 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product->load(['brand', 'category', 'variants', 'media']);
-        $activityLogs = activity('product')
-            ->performedOn($product)
+        $activityLogs = \Spatie\Activitylog\Models\Activity::query()
+            ->where('subject_type', Product::class)
+            ->where('subject_id', $product->id)
             ->latest()
             ->limit(10)
             ->get();
@@ -120,6 +123,7 @@ class ProductController extends Controller
         ]);
 
         $validated['is_active'] = $request->boolean('is_active');
+        unset($validated['image']);
         $product->update($validated);
 
         if ($request->hasFile('image')) {

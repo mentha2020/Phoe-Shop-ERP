@@ -14,14 +14,14 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::withCount('permissions')->get();
-        $permissions = Permission::all()->groupBy('group_name');
+        $permissions = Permission::all();
 
         return view('admin.user.role-index', compact('roles', 'permissions'));
     }
 
     public function create()
     {
-        $permissions = Permission::all()->groupBy('group_name');
+        $permissions = Permission::all();
 
         return view('admin.user.role-create', compact('permissions'));
     }
@@ -51,7 +51,7 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         $role->load('permissions');
-        $permissions = Permission::all()->groupBy('group_name');
+        $permissions = Permission::all();
         $rolePermissions = $role->permissions->pluck('name')->toArray();
 
         return view('admin.user.role-edit', compact('role', 'permissions', 'rolePermissions'));

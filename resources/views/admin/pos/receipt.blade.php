@@ -123,6 +123,7 @@
 </div>
 
 <style>
+body { overflow: auto !important; height: auto !important; }
 @media print {
     body * { visibility: hidden; }
     #receipt-content, #receipt-content * { visibility: visible; }

@@ -23,13 +23,18 @@ class PosController extends Controller
         $branchId = $request->get('branch_id', auth()->user()->branch_id ?? Branch::first()->id);
         $branch = Branch::find($branchId);
 
-        $products = Product::with(['category', 'brand'])
+        $products = Product::with(['category', 'brand', 'stocks'])
             ->active()
             ->whereHas('stocks', function ($q) use ($branchId) {
                 $q->where('branch_id', $branchId)->where('quantity', '>', 0);
             })
             ->orderBy('name')
             ->get();
+
+        $products->each(function ($product) use ($branchId) {
+            $stock = $product->stocks->where('branch_id', $branchId)->first();
+            $product->available_quantity = $stock ? $stock->quantity : 0;
+        });
 
         $categories = \App\Models\Category::active()->orderBy('name')->get();
         $customers = Customer::active()->orderBy('name')->get();
@@ -148,9 +153,7 @@ class PosController extends Controller
                 ]);
             }
 
-            $sale->calculateTotals();
-
-            // Record payment
+            // Record payment first so calculateTotals() can sum it
             SalePayment::create([
                 'sale_id' => $sale->id,
                 'method' => $validated['payment_method'],
@@ -158,12 +161,16 @@ class PosController extends Controller
                 'received_by' => auth()->id(),
             ]);
 
-            $sale->refresh();
+            $sale->calculateTotals();
 
             return $sale;
         });
 
-        return redirect()->route('admin.pos.receipt', $sale->id)->with('success', 'Sale completed successfully!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Sale completed successfully!',
+            'redirect' => route('admin.pos.receipt', $sale->id),
+        ]);
     }
 
     public function receipt($id)

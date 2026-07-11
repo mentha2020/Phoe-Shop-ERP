@@ -11,14 +11,49 @@ use App\Models\SaleItem;
 use App\Models\RepairJob;
 use App\Models\Stock;
 use App\Models\Brand;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Models\Activity;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $range = $request->get('range', 'today');
+
+        if ($range === 'yesterday') {
+            $dateFrom = now()->subDay()->startOfDay();
+            $dateTo = now()->subDay()->endOfDay();
+        } elseif ($range === 'week') {
+            $dateFrom = now()->startOfWeek();
+            $dateTo = now()->endOfDay();
+        } elseif ($range === 'month') {
+            $dateFrom = now()->startOfMonth();
+            $dateTo = now()->endOfDay();
+        } elseif ($range === 'year') {
+            $dateFrom = now()->startOfYear();
+            $dateTo = now()->endOfDay();
+        } else {
+            $dateFrom = now()->startOfDay();
+            $dateTo = now()->endOfDay();
+        }
+
+        $salesQuery = Sale::where('status', 'completed')
+            ->whereBetween('created_at', [$dateFrom, $dateTo]);
+
+        $periodRevenue = (clone $salesQuery)->sum('total');
+        $periodExpenses = Expense::whereBetween('created_at', [$dateFrom, $dateTo])->sum('amount');
+
+        $costQuery = SaleItem::select('sale_items.product_id', 'sale_items.quantity', 'products.purchase_price')
+            ->join('products', 'sale_items.product_id', '=', 'products.id')
+            ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
+            ->where('sales.status', 'completed')
+            ->whereBetween('sales.created_at', [$dateFrom, $dateTo]);
+
+        $periodCOGS = (clone $costQuery)->sum(DB::raw('sale_items.quantity * products.purchase_price'));
+        $periodProfit = $periodRevenue - $periodCOGS - $periodExpenses;
+
         $todaySales = Sale::whereDate('created_at', today())
             ->where('status', 'completed')
             ->sum('total');
@@ -56,7 +91,8 @@ class DashboardController extends Controller
 
         return view('dashboard', compact(
             'todaySales', 'monthRevenue', 'totalProducts', 'lowStockCount',
-            'pendingRepairs', 'recentSales', 'topProducts', 'recentActivity'
+            'pendingRepairs', 'recentSales', 'topProducts', 'recentActivity',
+            'periodRevenue', 'periodCOGS', 'periodExpenses', 'periodProfit', 'range'
         ));
     }
 }

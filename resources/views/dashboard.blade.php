@@ -8,6 +8,23 @@
         <h4 class="fw-bold mb-1">Dashboard</h4>
         <p class="text-muted mb-0">Welcome back, {{ auth()->user()->name }}!</p>
     </div>
+    <div class="d-flex gap-2">
+        @php
+            $ranges = [
+                'today' => 'Today',
+                'yesterday' => 'Yesterday',
+                'week' => 'This Week',
+                'month' => 'This Month',
+                'year' => 'This Year',
+            ];
+        @endphp
+        @foreach($ranges as $key => $label)
+            <a href="{{ route('admin.dashboard', ['range' => $key]) }}"
+               class="btn btn-sm {{ ($range ?? 'today') === $key ? 'btn-primary' : 'btn-outline-secondary' }}">
+                {{ $label }}
+            </a>
+        @endforeach
+    </div>
 </div>
 
 {{-- Stats Cards --}}
@@ -77,6 +94,81 @@
                 </div>
                 <div class="mt-3">
                     <span class="text-muted small"><i class="bi bi-clock"></i> Awaiting pickup</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Profit/Loss Cards --}}
+<div class="row g-4 mb-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="card h-100" style="border-left: 4px solid #10b981;">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(16, 185, 129, 0.1); display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-graph-up-arrow" style="font-size: 1.5rem; color: #10b981;"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-stat-value" style="color: #10b981;">${{ number_format($periodRevenue, 2) }}</div>
+                        <div class="card-stat-label">Revenue</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card h-100" style="border-left: 4px solid #f59e0b;">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(245, 158, 11, 0.1); display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-receipt" style="font-size: 1.5rem; color: #f59e0b;"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-stat-value" style="color: #f59e0b;">${{ number_format($periodCOGS, 2) }}</div>
+                        <div class="card-stat-label">Cost of Goods</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card h-100" style="border-left: 4px solid #ef4444;">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(239, 68, 68, 0.1); display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-cash-stack" style="font-size: 1.5rem; color: #ef4444;"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-stat-value" style="color: #ef4444;">${{ number_format($periodExpenses, 2) }}</div>
+                        <div class="card-stat-label">Expenses</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card h-100" style="border-left: 4px solid {{ $periodProfit >= 0 ? '#4f46e5' : '#ef4444' }};">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div style="width: 48px; height: 48px; border-radius: 12px; background: {{ $periodProfit >= 0 ? 'rgba(79, 70, 229, 0.1)' : 'rgba(239, 68, 68, 0.1)' }}; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi {{ $periodProfit >= 0 ? 'bi-badge-dollar' : 'bi-graph-down-arrow' }}" style="font-size: 1.5rem; color: {{ $periodProfit >= 0 ? '#4f46e5' : '#ef4444' }};"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-stat-value" style="color: {{ $periodProfit >= 0 ? '#4f46e5' : '#ef4444' }};">${{ number_format($periodProfit, 2) }}</div>
+                        <div class="card-stat-label">Profit / Loss</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -158,63 +250,6 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Sales Chart
-    const salesCtx = document.getElementById('salesChart').getContext('2d');
-    new Chart(salesCtx, {
-        type: 'line',
-        data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            datasets: [{
-                label: 'Sales',
-                data: [1200, 1900, 3000, 500, 2000, 3000, 4500],
-                borderColor: '#4f46e5',
-                backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                fill: true,
-                tension: 0.4,
-                pointRadius: 4,
-                pointHoverRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: { color: 'rgba(0,0,0,0.05)' }
-                },
-                x: {
-                    grid: { display: false }
-                }
-            }
-        }
-    });
-
-    // Brands Chart
-    const brandsCtx = document.getElementById('brandsChart').getContext('2d');
-    new Chart(brandsCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Apple', 'Samsung', 'Xiaomi', 'OnePlus', 'Others'],
-            datasets: [{
-                data: [35, 25, 20, 10, 10],
-                backgroundColor: ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b', '#94a3b8']
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: { usePointStyle: true, padding: 15 }
-                }
-            }
-        }
-    });
 });
 </script>
 @endpush

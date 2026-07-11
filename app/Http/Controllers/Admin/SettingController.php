@@ -7,6 +7,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -20,10 +21,20 @@ class SettingController extends Controller
     {
         $validated = $request->validate([
             'settings' => 'required|array',
+            'logo' => 'nullable|image|mimes:jpeg,png,webp,gif|max:2048',
         ]);
 
         foreach ($validated['settings'] as $key => $value) {
             Setting::set($key, $value);
+        }
+
+        if ($request->hasFile('logo')) {
+            $oldLogo = Setting::get('logo');
+            if ($oldLogo && Storage::disk('public')->exists($oldLogo)) {
+                Storage::disk('public')->delete($oldLogo);
+            }
+            $path = $request->file('logo')->store('logos', 'public');
+            Setting::set('logo', $path, 'general', 'text');
         }
 
         Cache::flush();

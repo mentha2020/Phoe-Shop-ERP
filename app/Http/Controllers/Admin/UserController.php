@@ -82,8 +82,9 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user->load('branch', 'roles', 'permissions');
-        $activityLogs = activity('user')
-            ->performedOn($user)
+        $activityLogs = \Spatie\Activitylog\Models\Activity::query()
+            ->where('subject_type', User::class)
+            ->where('subject_id', $user->id)
             ->latest()
             ->limit(20)
             ->get();

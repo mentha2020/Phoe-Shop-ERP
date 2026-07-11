@@ -79,7 +79,7 @@
                         <tr>
                             <td class="ps-3">
                                 @if($product->getFirstMedia('product-images'))
-                                    <img src="{{ $product->getFirstMediaUrl('product-images', 'thumbnail') }}" class="rounded" width="40" height="40" style="object-fit: cover;" alt="{{ $product->name }}">
+                                    <img src="{{ $product->getFirstMediaUrl('product-images') }}" class="rounded" width="40" height="40" style="object-fit: cover;" alt="{{ $product->name }}">
                                 @else
                                     <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                                         <i class="bi bi-image text-muted"></i>

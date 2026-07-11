@@ -70,7 +70,7 @@ class PurchaseOrderController extends Controller
             'items.*.unit_cost' => 'required|numeric|min:0',
         ]);
 
-        DB::transaction(function () use ($validated) {
+        $order = DB::transaction(function () use ($validated) {
             $order = PurchaseOrder::create([
                 'supplier_id' => $validated['supplier_id'],
                 'branch_id' => $validated['branch_id'],
@@ -98,6 +98,8 @@ class PurchaseOrderController extends Controller
             }
 
             $order->calculateTotals();
+
+            return $order;
         });
 
         activity('purchase')
@@ -111,7 +113,12 @@ class PurchaseOrderController extends Controller
     public function show(PurchaseOrder $order)
     {
         $order->load(['supplier', 'branch', 'items.product', 'items.productVariant', 'createdBy', 'payments', 'returns']);
-        $activityLogs = activity('purchase')->performedOn($order)->latest()->limit(10)->get();
+        $activityLogs = \Spatie\Activitylog\Models\Activity::query()
+            ->where('subject_type', \App\Models\PurchaseOrder::class)
+            ->where('subject_id', $order->id)
+            ->latest()
+            ->limit(10)
+            ->get();
 
         return view('admin.purchase.show', compact('order', 'activityLogs'));
     }

@@ -17,27 +17,38 @@
     {{-- Sidebar --}}
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <div class="d-flex align-items-center">
-                <div class="bg-primary rounded-3 p-2 d-flex align-items-center justify-content-center">
-                    <i class="bi bi-phone text-white fs-5"></i>
-                </div>
-                <span class="brand-text ms-2">PhoneShop ERP</span>
-            </div>
+                @php $sidebarLogo = \App\Models\Setting::get('logo'); @endphp
+                @if($sidebarLogo)
+                    <img src="{{ asset('storage/' . $sidebarLogo) }}" alt="Logo" class="brand-logo">
+                @else
+                    <div class="bg-primary rounded-3 p-2 d-flex align-items-center justify-content-center">
+                        <i class="bi bi-phone text-white fs-5"></i>
+                    </div>
+                @endif
         </div>
 
         <div class="sidebar-menu">
-            <div class="menu-header">Main</div>
-            <ul class="list-unstyled mb-0">
+            <div x-data="{ open: @json(request()->routeIs('admin.dashboard')) }">
+                <button @click="open = !open" class="menu-header w-100 text-start">
+                    <span>Main</span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                </button>
+                <ul class="list-unstyled mb-0" x-show="open" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <i class="bi bi-grid-1x2-fill"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-            </ul>
+                </ul>
+            </div>
 
-            <div class="menu-header">Point of Sale</div>
-            <ul class="list-unstyled mb-0">
+            <div x-data="{ open: @json(request()->routeIs('admin.pos.*') || request()->routeIs('admin.sales.*') || request()->routeIs('admin.quotations.*')) }">
+                <button @click="open = !open" class="menu-header w-100 text-start">
+                    <span>Point of Sale</span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                </button>
+                <ul class="list-unstyled mb-0" x-show="open" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.pos.index') }}" class="{{ request()->routeIs('admin.pos.*') ? 'active' : '' }}">
                         <i class="bi bi-cart3"></i>
@@ -56,10 +67,15 @@
                         <span>Quotations</span>
                     </a>
                 </li>
-            </ul>
+                </ul>
+            </div>
 
-            <div class="menu-header">Inventory</div>
-            <ul class="list-unstyled mb-0">
+            <div x-data="{ open: @json(request()->routeIs('admin.products.*') || request()->routeIs('admin.stock.*') || request()->routeIs('admin.stock-transfers.*') || request()->routeIs('admin.stock-adjustments.*')) }">
+                <button @click="open = !open" class="menu-header w-100 text-start">
+                    <span>Inventory</span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                </button>
+                <ul class="list-unstyled mb-0" x-show="open" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
                         <i class="bi bi-box-seam"></i>
@@ -87,10 +103,15 @@
                         <span>Adjustments</span>
                     </a>
                 </li>
-            </ul>
+                </ul>
+            </div>
 
-            <div class="menu-header">Purchasing</div>
-            <ul class="list-unstyled mb-0">
+            <div x-data="{ open: @json(request()->routeIs('admin.purchase-orders.*') || request()->routeIs('admin.suppliers.*')) }">
+                <button @click="open = !open" class="menu-header w-100 text-start">
+                    <span>Purchasing</span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                </button>
+                <ul class="list-unstyled mb-0" x-show="open" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.purchase-orders.index') }}" class="{{ request()->routeIs('admin.purchase-orders.*') ? 'active' : '' }}">
                         <i class="bi bi-bag-check"></i>
@@ -103,20 +124,30 @@
                         <span>Suppliers</span>
                     </a>
                 </li>
-            </ul>
+                </ul>
+            </div>
 
-            <div class="menu-header">Repairs</div>
-            <ul class="list-unstyled mb-0">
+            <div x-data="{ open: @json(request()->routeIs('admin.repairs.*')) }">
+                <button @click="open = !open" class="menu-header w-100 text-start">
+                    <span>Repairs</span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                </button>
+                <ul class="list-unstyled mb-0" x-show="open" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.repairs.index') }}" class="{{ request()->routeIs('admin.repairs.*') ? 'active' : '' }}">
                         <i class="bi bi-tools"></i>
                         <span>Repair Jobs</span>
                     </a>
                 </li>
-            </ul>
+                </ul>
+            </div>
 
-            <div class="menu-header">Finance</div>
-            <ul class="list-unstyled mb-0">
+            <div x-data="{ open: @json(request()->routeIs('admin.accounting.*') || request()->routeIs('admin.expenses.*')) }">
+                <button @click="open = !open" class="menu-header w-100 text-start">
+                    <span>Finance</span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                </button>
+                <ul class="list-unstyled mb-0" x-show="open" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.accounting.index') }}" class="{{ request()->routeIs('admin.accounting.*') ? 'active' : '' }}">
                         <i class="bi bi-calculator"></i>
@@ -129,20 +160,30 @@
                         <span>Expenses</span>
                     </a>
                 </li>
-            </ul>
+                </ul>
+            </div>
 
-            <div class="menu-header">Reports</div>
-            <ul class="list-unstyled mb-0">
+            <div x-data="{ open: @json(request()->routeIs('admin.reports.*')) }">
+                <button @click="open = !open" class="menu-header w-100 text-start">
+                    <span>Reports</span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                </button>
+                <ul class="list-unstyled mb-0" x-show="open" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.reports.sales') }}" class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
                         <i class="bi bi-graph-up"></i>
                         <span>Reports</span>
                     </a>
                 </li>
-            </ul>
+                </ul>
+            </div>
 
-            <div class="menu-header">Master Data</div>
-            <ul class="list-unstyled mb-0">
+            <div x-data="{ open: @json(request()->routeIs('admin.customers.*') || request()->routeIs('admin.brands.*') || request()->routeIs('admin.categories.*') || request()->routeIs('admin.branches.*')) }">
+                <button @click="open = !open" class="menu-header w-100 text-start">
+                    <span>Master Data</span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                </button>
+                <ul class="list-unstyled mb-0" x-show="open" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.customers.index') }}" class="{{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
                         <i class="bi bi-people"></i>
@@ -161,11 +202,22 @@
                         <span>Categories</span>
                     </a>
                 </li>
-            </ul>
+                <li class="menu-item">
+                    <a href="{{ route('admin.branches.index') }}" class="{{ request()->routeIs('admin.branches.*') ? 'active' : '' }}">
+                        <i class="bi bi-building"></i>
+                        <span>Branches</span>
+                    </a>
+                </li>
+                </ul>
+            </div>
 
-            @can('manage-users')
-            <div class="menu-header">Administration</div>
-            <ul class="list-unstyled mb-0">
+            @can('users.view')
+            <div x-data="{ open: @json(request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.activity-log')) }">
+                <button @click="open = !open" class="menu-header w-100 text-start">
+                    <span>Administration</span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                </button>
+                <ul class="list-unstyled mb-0" x-show="open" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                         <i class="bi bi-person-gear"></i>
@@ -179,18 +231,13 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('admin.branches.index') }}" class="{{ request()->routeIs('admin.branches.*') ? 'active' : '' }}">
-                        <i class="bi bi-building"></i>
-                        <span>Branches</span>
-                    </a>
-                </li>
-                <li class="menu-item">
                     <a href="{{ route('admin.activity-log') }}" class="{{ request()->routeIs('admin.activity-log') ? 'active' : '' }}">
                         <i class="bi bi-clock-history"></i>
                         <span>Activity Log</span>
                     </a>
                 </li>
-            </ul>
+                </ul>
+            </div>
             @endcan
         </div>
     </aside>
@@ -222,14 +269,14 @@
 
             <div class="d-flex align-items-center ms-auto">
                 {{-- Theme Toggle --}}
-                <button class="btn btn-link text-dark position-relative me-2" onclick="toggleTheme()" title="Toggle Theme">
+                <button class="btn btn-link position-relative me-2" onclick="toggleTheme()" title="Toggle Theme">
                     <i class="bi bi-moon-stars fs-5 d-none" id="themeIconLight"></i>
                     <i class="bi bi-sun fs-5" id="themeIconDark"></i>
                 </button>
 
                 {{-- Notifications --}}
                 <div class="dropdown me-2">
-                    <button class="btn btn-link text-dark position-relative" data-bs-toggle="dropdown">
+                    <button class="btn btn-link position-relative" data-bs-toggle="dropdown">
                         <i class="bi bi-bell fs-5"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notificationCount" style="display: none;">
                             0
@@ -251,7 +298,7 @@
 
                 {{-- User Menu --}}
                 <div class="dropdown">
-                    <button class="btn btn-link text-dark text-decoration-none d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown">
+                    <button class="btn btn-link text-decoration-none d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown">
                         <div class="avatar-sm me-2">
                             @if(auth()->user()->avatar)
                                 <img src="{{ asset('storage/' . auth()->user()->avatar) }}" class="rounded-circle" width="32" height="32" alt="{{ auth()->user()->name }}">

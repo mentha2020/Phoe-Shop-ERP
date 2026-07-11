@@ -10,6 +10,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Product extends Model implements HasMedia
 {
@@ -18,6 +19,8 @@ class Product extends Model implements HasMedia
     protected $keyType = 'string';
     public $incrementing = false;
     protected $guarded = [];
+
+    protected $appends = ['image_url'];
 
     protected $casts = [
         'purchase_price' => 'decimal:2',
@@ -30,6 +33,9 @@ class Product extends Model implements HasMedia
         static::creating(function ($model) {
             if (empty($model->id)) {
                 $model->id = Str::uuid();
+            }
+            if (empty($model->slug)) {
+                $model->slug = Str::slug($model->name);
             }
         });
     }
@@ -102,6 +108,11 @@ class Product extends Model implements HasMedia
     }
 
     public function getMainImageAttribute()
+    {
+        return $this->getFirstMediaUrl('product-images', 'thumbnail') ?: null;
+    }
+
+    public function getImageUrlAttribute()
     {
         return $this->getFirstMediaUrl('product-images', 'thumbnail') ?: null;
     }

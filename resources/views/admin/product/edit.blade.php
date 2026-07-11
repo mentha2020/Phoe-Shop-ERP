@@ -80,7 +80,7 @@
                 <div class="card-body">
                     @if($product->getFirstMedia('product-images'))
                         <div class="mb-3 text-center">
-                            <img src="{{ $product->getFirstMediaUrl('product-images', 'medium') }}" class="rounded mb-2" style="max-height: 150px;" alt="{{ $product->name }}">
+                            <img src="{{ $product->getFirstMediaUrl('product-images') }}" class="rounded mb-2" style="max-height: 150px;" alt="{{ $product->name }}">
                             <br>
                             <a href="{{ route('admin.products.media.destroy', [$product, $product->getFirstMedia('product-images')]) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this image?')">
                                 <i class="bi bi-trash me-1"></i>Remove Image

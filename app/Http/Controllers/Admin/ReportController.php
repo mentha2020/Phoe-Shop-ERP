@@ -142,7 +142,7 @@ class ReportController extends Controller
 
         // Cost of Goods (from purchase orders)
         $totalCOGS = PurchaseOrder::where('status', 'received')
-            ->whereBetween('received_at', [$dateFrom, $dateTo])
+            ->whereBetween('received_date', [$dateFrom, $dateTo])
             ->sum('total_amount');
 
         // Expenses

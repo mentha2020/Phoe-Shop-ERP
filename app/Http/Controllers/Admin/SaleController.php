@@ -51,7 +51,7 @@ class SaleController extends Controller
         $totalAmount = $sales->sum('total');
         $totalPaid = $sales->sum('paid_amount');
 
-        return view('admin.sales.index', compact('sales', 'totalAmount', 'totalPaid'));
+        return view('admin.sales.index', compact('sales', 'totalSales', 'totalAmount', 'totalPaid'));
     }
 
     public function show(Sale $sale)

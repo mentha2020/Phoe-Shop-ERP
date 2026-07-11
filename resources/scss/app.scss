@@ -157,15 +157,19 @@ $transition-speed: 0.3s;
     overflow-y: auto;
 
     .sidebar-brand {
-        height: $navbar-height;
-        display: flex;
-        align-items: center;
-        padding: 0 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: block;
+        padding: 0;
+        margin: 0;
+        border-bottom: none;
+        line-height: 0;
+        font-size: 0;
+        overflow: hidden;
 
         .brand-logo {
-            width: 32px;
-            height: 32px;
+            width: 70%;
+            display: block;
+            vertical-align: top;
+            margin: 0 auto;
         }
 
         .brand-text {
@@ -188,6 +192,29 @@ $transition-speed: 0.3s;
             color: rgba(148, 163, 184, 0.6);
             padding: 1rem 1rem 0.5rem;
             white-space: nowrap;
+            cursor: pointer;
+            background: none;
+            border: none;
+            outline: none;
+            display: flex;
+            align-items: center;
+            width: 100%;
+
+            .menu-chevron {
+                margin-left: auto;
+                opacity: 1;
+                color: rgba(148, 163, 184, 0.8);
+                transition: transform 0.2s ease;
+                flex-shrink: 0;
+
+                i {
+                    font-size: 0.7rem;
+                }
+            }
+
+            &:hover {
+                color: rgba(148, 163, 184, 0.9);
+            }
         }
 
         .menu-item {
@@ -282,6 +309,13 @@ $transition-speed: 0.3s;
     align-items: center;
     padding: 0 1.5rem;
     transition: left $transition-speed ease;
+
+    .btn-link {
+        color: #1e293b;
+        &:hover {
+            color: #0f172a;
+        }
+    }
 }
 
 .sidebar-collapsed .navbar-top {
@@ -417,6 +451,13 @@ $transition-speed: 0.3s;
 
     .navbar-top {
         background: $navbar-bg;
+
+        .btn-link {
+            color: #cbd5e1;
+            &:hover {
+                color: #f1f5f9;
+            }
+        }
     }
 
     .table th {

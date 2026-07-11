@@ -31,7 +31,7 @@
                 <div class="row g-4">
                     <div class="col-md-3 text-center">
                         @if($product->getFirstMedia('product-images'))
-                            <img src="{{ $product->getFirstMediaUrl('product-images', 'medium') }}" class="rounded mb-2" style="max-height: 150px; width: 100%; object-fit: cover;" alt="{{ $product->name }}">
+                            <img src="{{ $product->getFirstMediaUrl('product-images') }}" class="rounded mb-2" style="max-height: 150px; width: 100%; object-fit: cover;" alt="{{ $product->name }}">
                         @else
                             <div class="bg-light rounded d-inline-flex align-items-center justify-content-center mb-2" style="width: 150px; height: 150px;">
                                 <i class="bi bi-image text-muted" style="font-size: 2rem;"></i>
