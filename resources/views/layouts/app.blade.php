@@ -45,6 +45,7 @@
                 </a>
             </div>
 
+            @can('pos.view')
             <div class="menu-group">
                 <button @click="openGroup = openGroup === 'pos' ? '' : 'pos'" class="menu-header w-100 text-start">
                     <span>Point of Sale</span>
@@ -71,7 +72,9 @@
                 </li>
                 </ul>
             </div>
+            @endcan
 
+            @canany(['products.view', 'inventory.view'])
             <div class="menu-group">
                 <button @click="openGroup = openGroup === 'inventory' ? '' : 'inventory'" class="menu-header w-100 text-start">
                     <span>Inventory</span>
@@ -107,7 +110,9 @@
                 </li>
                 </ul>
             </div>
+            @endcanany
 
+            @can('purchase.view')
             <div class="menu-group">
                 <button @click="openGroup = openGroup === 'purchasing' ? '' : 'purchasing'" class="menu-header w-100 text-start">
                     <span>Purchasing</span>
@@ -128,7 +133,9 @@
                 </li>
                 </ul>
             </div>
+            @endcan
 
+            @can('repairs.view')
             <div class="menu-group">
                 <button @click="openGroup = openGroup === 'repairs' ? '' : 'repairs'" class="menu-header w-100 text-start">
                     <span>Repairs</span>
@@ -143,7 +150,9 @@
                 </li>
                 </ul>
             </div>
+            @endcan
 
+            @canany(['accounting.view', 'expenses.view'])
             <div class="menu-group">
                 <button @click="openGroup = openGroup === 'finance' ? '' : 'finance'" class="menu-header w-100 text-start">
                     <span>Finance</span>
@@ -164,7 +173,9 @@
                 </li>
                 </ul>
             </div>
+            @endcanany
 
+            @canany(['reports.view-sales', 'reports.view-purchases', 'reports.view-inventory', 'reports.view-financial', 'reports.view-customers', 'reports.view-suppliers', 'reports.view-repairs'])
             <div class="menu-group">
                 <button @click="openGroup = openGroup === 'reports' ? '' : 'reports'" class="menu-header w-100 text-start">
                     <span>Reports</span>
@@ -233,7 +244,9 @@
                 </li>
                 </ul>
             </div>
+            @endcanany
 
+            @canany(['customers.view', 'brands.view', 'categories.view', 'branches.view'])
             <div class="menu-group">
                 <button @click="openGroup = openGroup === 'master' ? '' : 'master'" class="menu-header w-100 text-start">
                     <span>Master Data</span>
@@ -266,6 +279,7 @@
                 </li>
                 </ul>
             </div>
+            @endcanany
 
             @can('users.view')
             <div class="menu-group">
