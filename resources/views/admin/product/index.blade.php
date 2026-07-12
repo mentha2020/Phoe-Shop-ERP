@@ -77,11 +77,9 @@
                 <tbody>
                     @forelse($products as $product)
                         <tr>
-                            <td class="ps-3">
+                            <td class="ps-3" style="width: 50px;">
                                 @if($product->getFirstMedia('product-images'))
-                                    <div style="width: 40px; height: 40px; overflow: hidden; border-radius: 0.375rem; flex-shrink: 0;">
-                                        <img src="{{ $product->getFirstMediaUrl('product-images', 'thumbnail') }}" style="width: 100%; height: 100%; object-fit: cover;" alt="{{ $product->name }}">
-                                    </div>
+                                    <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 0.375rem; display: block;">
                                 @else
                                     <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                                         <i class="bi bi-image text-muted"></i>
