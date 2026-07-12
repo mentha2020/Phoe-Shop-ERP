@@ -112,17 +112,6 @@ jobs:
           overwrite: true
           rm: false
 
-      - name: Deploy .env file
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          source: ".env"
-          target: "/home3/monaralk/public_html/chajare.monaralk.com/.env"
-          overwrite: true
-
       - name: Run remote commands
         uses: appleboy/ssh-action@v1.0.3
         with:
