@@ -17,11 +17,13 @@ function posApp() {
         processing: false,
         paymentMethod: 'cash',
         paidAmount: 0,
+        dueDate: '',
         paymentMethods: [
             { value: 'cash', label: 'Cash', icon: 'bi bi-cash' },
             { value: 'card', label: 'Credit/Debit Card', icon: 'bi bi-credit-card' },
             { value: 'transfer', label: 'Bank Transfer', icon: 'bi bi-bank' },
             { value: 'e_wallet', label: 'E-Wallet', icon: 'bi bi-wallet2' },
+            { value: 'credit', label: 'Credit Sale', icon: 'bi bi-person-badge' },
         ],
 
         init() {
@@ -114,13 +116,38 @@ function posApp() {
 
         openPaymentModal() {
             this.paidAmount = this.cartTotal;
+            this.paymentMethod = 'cash';
+            this.dueDate = '';
             this.showPaymentModal = true;
         },
 
+        get isCreditSale() {
+            return this.paymentMethod === 'credit';
+        },
+
+        get dueAmount() {
+            return Math.max(0, this.cartTotal - this.paidAmount);
+        },
+
         processPayment() {
-            if (this.paidAmount < this.cartTotal) {
-                alert('Insufficient payment amount.');
-                return;
+            if (this.paymentMethod === 'credit') {
+                if (!this.selectedCustomer) {
+                    alert('Please select a customer for credit sales.');
+                    return;
+                }
+                if (!this.dueDate) {
+                    alert('Please set a due date for credit sales.');
+                    return;
+                }
+                if (this.paidAmount >= this.cartTotal) {
+                    alert('Credit sale requires payment less than total. Use Cash/Card for full payment.');
+                    return;
+                }
+            } else {
+                if (this.paidAmount < this.cartTotal) {
+                    alert('Insufficient payment amount.');
+                    return;
+                }
             }
 
             this.processing = true;
@@ -155,6 +182,7 @@ function posApp() {
                     shipping_amount: 0,
                     payment_method: this.paymentMethod,
                     paid_amount: this.paidAmount,
+                    due_date: this.isCreditSale ? this.dueDate : null,
                 })
             })
             .then(response => {
@@ -391,10 +419,29 @@ function posApp() {
                             <div class="mb-3">
                                 <label class="form-label">Amount Paid</label>
                                 <input type="number" class="form-control form-control-lg" x-model.number="paidAmount"
-                                       min="0" step="0.01" :placeholder="'Min: Rs. ' + cartTotal.toFixed(2)">
+                                       min="0" step="0.01"
+                                       :placeholder="isCreditSale ? 'Partial payment' : 'Min: Rs. ' + cartTotal.toFixed(2)"
+                                       :max="isCreditSale ? cartTotal : undefined">
                             </div>
 
-                            <div class="mb-3" x-show="paidAmount >= cartTotal">
+                            <!-- Credit Sale: Due Amount + Due Date -->
+                            <div x-show="isCreditSale" class="mb-3">
+                                <div class="alert alert-warning d-flex align-items-center mb-2" role="alert">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    <span>Remaining balance will be charged to customer account</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="fw-bold text-danger">Due Amount:</span>
+                                    <span class="fw-bold text-danger" x-text="'Rs. ' + dueAmount.toFixed(2)"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Due Date</label>
+                                    <input type="date" class="form-control" x-model="dueDate"
+                                           :min="new Date().toISOString().split('T')[0]">
+                                </div>
+                            </div>
+
+                            <div class="mb-3" x-show="!isCreditSale && paidAmount >= cartTotal">
                                 <label class="form-label">Change</label>
                                 <input type="text" class="form-control form-control-lg text-success fw-bold"
                                        :value="'Rs. ' + change.toFixed(2)" readonly>
@@ -418,7 +465,7 @@ function posApp() {
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" @click="showPaymentModal = false">Cancel</button>
                     <button type="button" class="btn btn-primary btn-lg" @click="processPayment()"
-                            :disabled="paidAmount < cartTotal">
+                            :disabled="isCreditSale ? (!selectedCustomer || !dueDate || dueAmount <= 0) : (paidAmount < cartTotal)">
                         <i class="bi bi-check-circle me-2"></i>Complete Sale
                     </button>
                 </div>

@@ -92,19 +92,29 @@ class PosController extends Controller
             'shipping_amount' => 'nullable|numeric|min:0',
             'payment_method' => 'required|in:cash,card,transfer,e_wallet,credit,mixed',
             'paid_amount' => 'required|numeric|min:0',
+            'due_date' => 'required_if:payment_method,credit|nullable|date|after_or_equal:today',
             'notes' => 'nullable|string',
         ]);
 
+        if (($validated['payment_method'] ?? '') === 'credit') {
+            if (empty($validated['customer_id'])) {
+                return response()->json(['message' => 'Customer is required for credit sales.'], 422);
+            }
+        }
+
         $sale = DB::transaction(function () use ($validated) {
+            $isCredit = ($validated['payment_method'] ?? '') === 'credit';
+
             $sale = Sale::create([
                 'branch_id' => $validated['branch_id'],
                 'customer_id' => $validated['customer_id'] ?? null,
-                'status' => 'completed',
+                'status' => $isCredit ? 'pending' : 'completed',
                 'discount_amount' => $validated['discount_amount'] ?? 0,
                 'tax_amount' => $validated['tax_amount'] ?? 0,
                 'shipping_amount' => $validated['shipping_amount'] ?? 0,
                 'payment_method' => $validated['payment_method'],
                 'paid_amount' => $validated['paid_amount'],
+                'due_date' => $validated['due_date'] ?? null,
                 'notes' => $validated['notes'] ?? null,
                 'created_by' => auth()->id(),
             ]);
@@ -162,6 +172,15 @@ class PosController extends Controller
             ]);
 
             $sale->calculateTotals();
+
+            // Update customer balance for credit sales
+            if ($isCredit && $validated['customer_id']) {
+                $dueAmount = $sale->total - $sale->paid_amount;
+                if ($dueAmount > 0) {
+                    Customer::where('id', $validated['customer_id'])
+                        ->increment('current_balance', $dueAmount);
+                }
+            }
 
             return $sale;
         });
