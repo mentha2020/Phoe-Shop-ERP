@@ -103,16 +103,14 @@
 {{-- Profit/Loss Cards --}}
 <div class="row g-4 mb-4">
     <div class="col-xl-3 col-md-6">
-        <div class="card h-100" style="border-left: 4px solid #10b981;">
+        <div class="card card-stat h-100">
             <div class="card-body">
                 <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(16, 185, 129, 0.1); display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-graph-up-arrow" style="font-size: 1.5rem; color: #10b981;"></i>
-                        </div>
+                    <div class="card-stat-icon gradient-success me-3">
+                        <i class="bi bi-graph-up-arrow"></i>
                     </div>
                     <div>
-                        <div class="card-stat-value" style="color: #10b981;">Rs. {{ number_format($periodRevenue, 2) }}</div>
+                        <div class="card-stat-value">Rs. {{ number_format($periodRevenue, 2) }}</div>
                         <div class="card-stat-label">Revenue</div>
                     </div>
                 </div>
@@ -121,16 +119,14 @@
     </div>
 
     <div class="col-xl-3 col-md-6">
-        <div class="card h-100" style="border-left: 4px solid #f59e0b;">
+        <div class="card card-stat h-100">
             <div class="card-body">
                 <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(245, 158, 11, 0.1); display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-receipt" style="font-size: 1.5rem; color: #f59e0b;"></i>
-                        </div>
+                    <div class="card-stat-icon gradient-warning me-3">
+                        <i class="bi bi-receipt"></i>
                     </div>
                     <div>
-                        <div class="card-stat-value" style="color: #f59e0b;">Rs. {{ number_format($periodCOGS, 2) }}</div>
+                        <div class="card-stat-value">Rs. {{ number_format($periodCOGS, 2) }}</div>
                         <div class="card-stat-label">Cost of Goods</div>
                     </div>
                 </div>
@@ -139,16 +135,14 @@
     </div>
 
     <div class="col-xl-3 col-md-6">
-        <div class="card h-100" style="border-left: 4px solid #ef4444;">
+        <div class="card card-stat h-100">
             <div class="card-body">
                 <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(239, 68, 68, 0.1); display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-cash-stack" style="font-size: 1.5rem; color: #ef4444;"></i>
-                        </div>
+                    <div class="card-stat-icon gradient-danger me-3">
+                        <i class="bi bi-cash-stack"></i>
                     </div>
                     <div>
-                        <div class="card-stat-value" style="color: #ef4444;">Rs. {{ number_format($periodExpenses, 2) }}</div>
+                        <div class="card-stat-value">Rs. {{ number_format($periodExpenses, 2) }}</div>
                         <div class="card-stat-label">Expenses</div>
                     </div>
                 </div>
@@ -157,16 +151,14 @@
     </div>
 
     <div class="col-xl-3 col-md-6">
-        <div class="card h-100" style="border-left: 4px solid {{ $periodProfit >= 0 ? '#4f46e5' : '#ef4444' }};">
+        <div class="card card-stat h-100">
             <div class="card-body">
                 <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <div style="width: 48px; height: 48px; border-radius: 12px; background: {{ $periodProfit >= 0 ? 'rgba(79, 70, 229, 0.1)' : 'rgba(239, 68, 68, 0.1)' }}; display: flex; align-items: center; justify-content: center;">
-                            <i class="bi {{ $periodProfit >= 0 ? 'bi-badge-dollar' : 'bi-graph-down-arrow' }}" style="font-size: 1.5rem; color: {{ $periodProfit >= 0 ? '#4f46e5' : '#ef4444' }};"></i>
-                        </div>
+                    <div class="card-stat-icon gradient-info me-3">
+                        <i class="bi bi-badge-dollar"></i>
                     </div>
                     <div>
-                        <div class="card-stat-value" style="color: {{ $periodProfit >= 0 ? '#4f46e5' : '#ef4444' }};">Rs. {{ number_format($periodProfit, 2) }}</div>
+                        <div class="card-stat-value">Rs. {{ number_format($periodProfit, 2) }}</div>
                         <div class="card-stat-label">Profit / Loss</div>
                     </div>
                 </div>
@@ -177,70 +169,58 @@
 
 {{-- Due/Outstanding Cards --}}
 <div class="row g-4 mb-4">
-    <div class="col-xl-4 col-md-6">
-        <div class="card h-100" style="border-left: 4px solid #f97316;">
+    <div class="col-xl-4 col-md-4">
+        <div class="card card-stat h-100">
             <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <div class="me-3">
-                            <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(249, 115, 22, 0.1); display: flex; align-items: center; justify-content: center;">
-                                <i class="bi bi-person-exclamation" style="font-size: 1.5rem; color: #f97316;"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="card-stat-value" style="color: #f97316;">Rs. {{ number_format($salesDue->total_due ?? 0, 2) }}</div>
-                            <div class="card-stat-label">Sales Due from Customers</div>
-                        </div>
+                <div class="d-flex align-items-center">
+                    <div class="card-stat-icon gradient-primary me-3">
+                        <i class="bi bi-person-exclamation"></i>
+                    </div>
+                    <div>
+                        <div class="card-stat-value">Rs. {{ number_format($salesDue->total_due ?? 0, 2) }}</div>
+                        <div class="card-stat-label">Sales Due from Customers</div>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <span class="text-muted small"><i class="bi bi-file-earmark-text text-warning"></i> {{ $salesDue->count ?? 0 }} unpaid invoices</span>
+                    <span class="text-muted small"><i class="bi bi-file-earmark-text"></i> {{ $salesDue->count ?? 0 }} unpaid invoices</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl-4 col-md-6">
-        <div class="card h-100" style="border-left: 4px solid #8b5cf6;">
+    <div class="col-xl-4 col-md-4">
+        <div class="card card-stat h-100">
             <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <div class="me-3">
-                            <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(139, 92, 246, 0.1); display: flex; align-items: center; justify-content: center;">
-                                <i class="bi bi-truck" style="font-size: 1.5rem; color: #8b5cf6;"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="card-stat-value" style="color: #8b5cf6;">Rs. {{ number_format($purchaseDue->total_due ?? 0, 2) }}</div>
-                            <div class="card-stat-label">Purchase Due to Suppliers</div>
-                        </div>
+                <div class="d-flex align-items-center">
+                    <div class="card-stat-icon gradient-danger me-3">
+                        <i class="bi bi-truck"></i>
+                    </div>
+                    <div>
+                        <div class="card-stat-value">Rs. {{ number_format($purchaseDue->total_due ?? 0, 2) }}</div>
+                        <div class="card-stat-label">Purchase Due to Suppliers</div>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <span class="text-muted small"><i class="bi bi-bag-check text-primary"></i> {{ $purchaseDue->count ?? 0 }} pending POs</span>
+                    <span class="text-muted small"><i class="bi bi-bag-check"></i> {{ $purchaseDue->count ?? 0 }} pending POs</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl-4 col-md-6">
-        <div class="card h-100" style="border-left: 4px solid #06b6d4;">
+    <div class="col-xl-4 col-md-4">
+        <div class="card card-stat h-100">
             <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <div class="me-3">
-                            <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(6, 182, 212, 0.1); display: flex; align-items: center; justify-content: center;">
-                                <i class="bi bi-tools" style="font-size: 1.5rem; color: #06b6d4;"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="card-stat-value" style="color: #06b6d4;">Rs. {{ number_format($repairDue->total_due ?? 0, 2) }}</div>
-                            <div class="card-stat-label">Repair Due from Customers</div>
-                        </div>
+                <div class="d-flex align-items-center">
+                    <div class="card-stat-icon gradient-warning me-3">
+                        <i class="bi bi-tools"></i>
+                    </div>
+                    <div>
+                        <div class="card-stat-value">Rs. {{ number_format($repairDue->total_due ?? 0, 2) }}</div>
+                        <div class="card-stat-label">Repair Due from Customers</div>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <span class="text-muted small"><i class="bi bi-clock text-info"></i> {{ $repairDue->count ?? 0 }} unpaid repairs</span>
+                    <span class="text-muted small"><i class="bi bi-clock"></i> {{ $repairDue->count ?? 0 }} unpaid repairs</span>
                 </div>
             </div>
         </div>
