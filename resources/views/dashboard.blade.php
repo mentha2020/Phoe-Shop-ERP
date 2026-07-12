@@ -175,6 +175,78 @@
     </div>
 </div>
 
+{{-- Due/Outstanding Cards --}}
+<div class="row g-4 mb-4">
+    <div class="col-xl-4 col-md-6">
+        <div class="card h-100" style="border-left: 4px solid #f97316;">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(249, 115, 22, 0.1); display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-person-exclamation" style="font-size: 1.5rem; color: #f97316;"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="card-stat-value" style="color: #f97316;">Rs. {{ number_format($salesDue->total_due ?? 0, 2) }}</div>
+                            <div class="card-stat-label">Sales Due from Customers</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="text-muted small"><i class="bi bi-file-earmark-text text-warning"></i> {{ $salesDue->count ?? 0 }} unpaid invoices</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6">
+        <div class="card h-100" style="border-left: 4px solid #8b5cf6;">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(139, 92, 246, 0.1); display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-truck" style="font-size: 1.5rem; color: #8b5cf6;"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="card-stat-value" style="color: #8b5cf6;">Rs. {{ number_format($purchaseDue->total_due ?? 0, 2) }}</div>
+                            <div class="card-stat-label">Purchase Due to Suppliers</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="text-muted small"><i class="bi bi-bag-check text-primary"></i> {{ $purchaseDue->count ?? 0 }} pending POs</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6">
+        <div class="card h-100" style="border-left: 4px solid #06b6d4;">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(6, 182, 212, 0.1); display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-tools" style="font-size: 1.5rem; color: #06b6d4;"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="card-stat-value" style="color: #06b6d4;">Rs. {{ number_format($repairDue->total_due ?? 0, 2) }}</div>
+                            <div class="card-stat-label">Repair Due from Customers</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="text-muted small"><i class="bi bi-clock text-info"></i> {{ $repairDue->count ?? 0 }} unpaid repairs</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {{-- Revenue vs Expenses Chart --}}
 <div class="row g-4 mb-4">
     <div class="col-xl-6">

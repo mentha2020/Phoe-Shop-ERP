@@ -72,6 +72,21 @@ class DashboardController extends Controller
         $pendingRepairs = RepairJob::whereIn('status', ['received', 'diagnosed', 'in_progress', 'waiting_parts'])
             ->count();
 
+        $salesDue = Sale::where('status', 'completed')
+            ->selectRaw('SUM(total - paid_amount) as total_due, COUNT(*) as count')
+            ->whereRaw('total > paid_amount')
+            ->first();
+
+        $purchaseDue = \App\Models\PurchaseOrder::whereIn('status', ['pending', 'partial', 'approved'])
+            ->selectRaw('SUM(total_amount - paid_amount) as total_due, COUNT(*) as count')
+            ->whereRaw('total_amount > paid_amount')
+            ->first();
+
+        $repairDue = RepairJob::whereIn('status', ['received', 'diagnosed', 'in_progress', 'waiting_parts', 'completed'])
+            ->selectRaw('SUM(final_cost - deposit_amount) as total_due, COUNT(*) as count')
+            ->whereRaw('final_cost > deposit_amount AND final_cost > 0')
+            ->first();
+
         $recentSales = Sale::with(['customer', 'creator'])
             ->latest()
             ->limit(5)
@@ -120,7 +135,8 @@ class DashboardController extends Controller
             'todaySales', 'monthRevenue', 'totalProducts', 'lowStockCount',
             'pendingRepairs', 'recentSales', 'topProducts', 'recentActivity',
             'periodRevenue', 'periodCOGS', 'periodExpenses', 'periodProfit', 'range',
-            'chartLabels', 'chartRevenue', 'chartExpenses', 'chartProfit'
+            'chartLabels', 'chartRevenue', 'chartExpenses', 'chartProfit',
+            'salesDue', 'purchaseDue', 'repairDue'
         ));
     }
 }
