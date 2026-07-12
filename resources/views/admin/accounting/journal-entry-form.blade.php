@@ -85,16 +85,16 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <span>Total Debit:</span>
-                            <span id="totalDebit" class="fw-bold">$0.00</span>
+                            <span id="totalDebit" class="fw-bold">Rs. 0.00</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Total Credit:</span>
-                            <span id="totalCredit" class="fw-bold">$0.00</span>
+                            <span id="totalCredit" class="fw-bold">Rs. 0.00</span>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
                             <span>Difference:</span>
-                            <span id="difference" class="fw-bold">$0.00</span>
+                            <span id="difference" class="fw-bold">Rs. 0.00</span>
                         </div>
                         <div id="balanceStatus" class="mt-2 text-center"></div>
                     </div>
@@ -151,10 +151,10 @@ function calculateTotals() {
         totalCredit += parseFloat(input.value) || 0;
     });
 
-    document.getElementById('totalDebit').textContent = '$' + totalDebit.toFixed(2);
-    document.getElementById('totalCredit').textContent = '$' + totalCredit.toFixed(2);
+    document.getElementById('totalDebit').textContent = 'Rs. ' + totalDebit.toFixed(2);
+    document.getElementById('totalCredit').textContent = 'Rs. ' + totalCredit.toFixed(2);
     const diff = Math.abs(totalDebit - totalCredit);
-    document.getElementById('difference').textContent = '$' + diff.toFixed(2);
+    document.getElementById('difference').textContent = 'Rs. ' + diff.toFixed(2);
 
     const statusEl = document.getElementById('balanceStatus');
     const submitBtn = document.getElementById('submitBtn');

@@ -30,7 +30,7 @@
                         </tr>
                         <tr>
                             <td class="text-muted">Amount</td>
-                            <td class="fw-bold text-primary fs-5">${{ number_format($expense->amount, 2) }}</td>
+                            <td class="fw-bold text-primary fs-5">Rs. {{ number_format($expense->amount, 2) }}</td>
                         </tr>
                         <tr>
                             <td class="text-muted">Date</td>

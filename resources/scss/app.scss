@@ -184,13 +184,18 @@ $transition-speed: 0.3s;
     .sidebar-menu {
         padding: 0.5rem 0;
 
+        .menu-group {
+            border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+            &:last-child { border-bottom: none; }
+        }
+
         .menu-header {
             font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: rgba(148, 163, 184, 0.6);
-            padding: 1rem 1rem 0.5rem;
+            color: rgba(148, 163, 184, 0.7);
+            padding: 1rem 1.25rem 0.5rem;
             white-space: nowrap;
             cursor: pointer;
             background: none;
@@ -199,59 +204,75 @@ $transition-speed: 0.3s;
             display: flex;
             align-items: center;
             width: 100%;
+            transition: color 0.2s ease;
 
             .menu-chevron {
                 margin-left: auto;
-                opacity: 1;
-                color: rgba(148, 163, 184, 0.8);
-                transition: transform 0.2s ease;
+                color: rgba(148, 163, 184, 0.7);
+                transition: transform 0.25s ease;
                 flex-shrink: 0;
 
                 i {
-                    font-size: 0.7rem;
+                    font-size: 0.65rem;
+                    transition: transform 0.25s ease;
+
+                    &.rotate-open {
+                        transform: rotate(0deg);
+                    }
+                    &.rotate-closed {
+                        transform: rotate(-90deg);
+                    }
                 }
             }
 
             &:hover {
-                color: rgba(148, 163, 184, 0.9);
+                color: rgba(255, 255, 255, 0.9);
+                .menu-chevron { color: rgba(255, 255, 255, 0.9); }
             }
         }
 
         .menu-item {
-            padding: 0;
+            padding: 0 0.5rem;
 
             a {
                 display: flex;
                 align-items: center;
-                padding: 0.6rem 1rem;
+                padding: 0.55rem 0.75rem;
+                margin: 0.1rem 0;
                 color: $sidebar-text;
                 text-decoration: none;
-                transition: all $transition-speed ease;
+                transition: all 0.2s ease;
                 white-space: nowrap;
+                border-radius: 0.5rem;
 
                 &:hover {
-                    color: white;
+                    color: $sidebar-text-active;
                     background: $sidebar-hover;
                 }
 
                 &.active {
                     color: $sidebar-text-active;
                     background: $sidebar-active;
-                    border-right: 3px solid $primary;
+
+                    i {
+                        color: $primary-light;
+                    }
                 }
 
                 i {
                     width: 20px;
                     text-align: center;
                     margin-right: 0.75rem;
-                    font-size: 1.1rem;
+                    font-size: 1.05rem;
+                    transition: color 0.2s ease;
                 }
 
                 .menu-badge {
                     margin-left: auto;
-                    font-size: 0.7rem;
-                    padding: 0.2rem 0.5rem;
-                    border-radius: 10px;
+                    font-size: 0.65rem;
+                    font-weight: 600;
+                    padding: 0.15rem 0.45rem;
+                    border-radius: 8px;
                     background: $danger;
                     color: white;
                 }
@@ -266,18 +287,42 @@ $transition-speed: 0.3s;
         width: $sidebar-collapsed-width;
 
         .brand-text,
-        .menu-header,
         .menu-item a span,
         .menu-item a .menu-badge {
             display: none;
         }
 
-        .menu-item a {
+        .menu-header {
+            padding: 0.75rem 0 0.25rem;
             justify-content: center;
-            padding: 0.6rem;
+            font-size: 0;
 
-            i {
-                margin-right: 0;
+            span:not(.menu-chevron) {
+                display: none;
+            }
+
+            .menu-chevron {
+                margin-left: 0;
+                display: flex;
+                justify-content: center;
+                opacity: 0.5;
+
+                i {
+                    font-size: 0.55rem;
+                }
+            }
+        }
+
+        .menu-item {
+            padding: 0 0.35rem;
+
+            a {
+                justify-content: center;
+                padding: 0.55rem;
+
+                i {
+                    margin-right: 0;
+                }
             }
         }
     }
@@ -445,6 +490,54 @@ $transition-speed: 0.3s;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
 
+    .bg-white {
+        background-color: #1e293b !important;
+    }
+
+    .bg-light {
+        background-color: #334155 !important;
+        color: #e2e8f0 !important;
+    }
+
+    .btn-light {
+        background-color: #334155;
+        border-color: #475569;
+        color: #e2e8f0;
+
+        &:hover {
+            background-color: #475569;
+            border-color: #64748b;
+        }
+    }
+
+    .table > :not(caption) > * > * {
+        background-color: transparent;
+        color: #e2e8f0;
+    }
+
+    .table-hover > tbody > tr:hover > * {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .modal-content {
+        background-color: #1e293b;
+        color: #e2e8f0;
+    }
+
+    .form-control, .form-select {
+        background-color: #0f172a;
+        border-color: #334155;
+        color: #e2e8f0;
+
+        &:disabled, &[readonly] {
+            background-color: #1e293b;
+        }
+
+        &::placeholder {
+            color: #64748b;
+        }
+    }
+
     .sidebar {
         background: $sidebar-bg;
     }
@@ -462,6 +555,15 @@ $transition-speed: 0.3s;
 
     .table th {
         color: #94a3b8;
+    }
+
+    .badge.bg-light {
+        background-color: #334155 !important;
+        color: #e2e8f0 !important;
+    }
+
+    .text-dark {
+        color: #e2e8f0 !important;
     }
 }
 

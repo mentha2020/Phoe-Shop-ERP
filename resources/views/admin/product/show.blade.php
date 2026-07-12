@@ -143,7 +143,7 @@
                                                 <span class="text-muted">-</span>
                                             @endif
                                         </td>
-                                        <td>${{ number_format($variant->price ?? 0, 2) }}</td>
+                                        <td>Rs. {{ number_format($variant->price ?? 0, 2) }}</td>
                                         <td>
                                             @if($variant->is_active ?? true)
                                                 <span class="badge bg-success-subtle text-success">Active</span>
@@ -169,11 +169,11 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label class="form-label fw-medium text-muted small">Purchase Price</label>
-                    <div class="fs-4 fw-bold text-success">${{ number_format($product->purchase_price, 2) }}</div>
+                    <div class="fs-4 fw-bold text-success">Rs. {{ number_format($product->purchase_price, 2) }}</div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-medium text-muted small">Selling Price</label>
-                    <div class="fs-4 fw-bold text-primary">${{ number_format($product->selling_price, 2) }}</div>
+                    <div class="fs-4 fw-bold text-primary">Rs. {{ number_format($product->selling_price, 2) }}</div>
                 </div>
                 <hr>
                 <div>

@@ -14,7 +14,7 @@
             <div class="card border-0 shadow-sm bg-primary text-white">
                 <div class="card-body">
                     <h6 class="card-title">Total Bank Balance</h6>
-                    <h2 class="mb-0">${{ number_format($totalBalance, 2) }}</h2>
+                    <h2 class="mb-0">Rs. {{ number_format($totalBalance, 2) }}</h2>
                     <small>{{ $bankAccounts->count() }} accounts</small>
                 </div>
             </div>
@@ -23,7 +23,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <h6 class="card-title text-muted">Total Debit</h6>
-                    <h2 class="mb-0 text-success">${{ number_format($totalDebit, 2) }}</h2>
+                    <h2 class="mb-0 text-success">Rs. {{ number_format($totalDebit, 2) }}</h2>
                     <small class="text-muted">Posted entries</small>
                 </div>
             </div>
@@ -32,7 +32,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <h6 class="card-title text-muted">Total Credit</h6>
-                    <h2 class="mb-0 text-danger">${{ number_format($totalCredit, 2) }}</h2>
+                    <h2 class="mb-0 text-danger">Rs. {{ number_format($totalCredit, 2) }}</h2>
                     <small class="text-muted">Posted entries</small>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                 <div class="card-body">
                     <h6 class="card-title text-muted">Net Position</h6>
                     <h2 class="mb-0 {{ $totalDebit - $totalCredit >= 0 ? 'text-success' : 'text-danger' }}">
-                        ${{ number_format($totalDebit - $totalCredit, 2) }}
+                        Rs. {{ number_format($totalDebit - $totalCredit, 2) }}
                     </h2>
                     <small class="text-muted">Debit - Credit</small>
                 </div>
@@ -72,7 +72,7 @@
                             <small class="text-muted">{{ $account->bank_name }} - {{ $account->account_type }}</small>
                         </div>
                         <div class="text-end">
-                            <div class="fw-bold">${{ number_format($account->current_balance, 2) }}</div>
+                            <div class="fw-bold">Rs. {{ number_format($account->current_balance, 2) }}</div>
                             <small class="text-muted">{{ strtoupper($account->currency) }}</small>
                         </div>
                     </div>

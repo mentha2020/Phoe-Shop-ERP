@@ -70,8 +70,8 @@
                             <td>{{ $sale->created_at->format('d M Y H:i') }}</td>
                             <td>{{ $sale->customer->name ?? 'Walk-in' }}</td>
                             <td>{{ $sale->items->sum('quantity') }}</td>
-                            <td class="text-end fw-bold">${{ number_format($sale->total, 2) }}</td>
-                            <td class="text-end">${{ number_format($sale->paid_amount, 2) }}</td>
+                            <td class="text-end fw-bold">Rs. {{ number_format($sale->total, 2) }}</td>
+                            <td class="text-end">Rs. {{ number_format($sale->paid_amount, 2) }}</td>
                             <td><span class="badge bg-info text-dark text-uppercase">{{ $sale->payment_method }}</span></td>
                             <td>
                                 @if($sale->status === 'completed')

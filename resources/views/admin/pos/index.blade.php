@@ -190,6 +190,9 @@ function posApp() {
     <div class="pos-products p-3">
         <!-- Top Bar -->
         <div class="d-flex align-items-center gap-3 mb-3">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary" title="Dashboard">
+                <i class="bi bi-speedometer2"></i>
+            </a>
             <div class="flex-grow-1">
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -227,7 +230,7 @@ function posApp() {
                             <h6 class="card-title mb-1 small fw-semibold" style="line-height: 1.2; min-height: 2.4em; overflow: hidden;" x-text="product.name"></h6>
                             <small class="text-muted" x-text="product.sku"></small>
                             <div class="mt-auto pt-1">
-                                <span class="badge fs-6" style="background: #4f46e5; color: #fff;" x-text="'$' + parseFloat(product.selling_price).toFixed(2)"></span>
+                                <span class="badge fs-6" style="background: #4f46e5; color: #fff;" x-text="'Rs. ' + parseFloat(product.selling_price).toFixed(2)"></span>
                                 <div class="mt-1">
                                     <small :class="product.available_quantity > 0 ? 'text-success' : 'text-danger'"
                                            x-text="'Stock: ' + product.available_quantity"></small>
@@ -271,7 +274,7 @@ function posApp() {
                 <div class="pos-cart-item p-2 d-flex align-items-center gap-2">
                     <div class="flex-grow-1">
                         <div class="fw-semibold small" x-text="item.product_name"></div>
-                        <small class="text-muted" x-text="'$' + parseFloat(item.unit_price).toFixed(2) + ' each'"></small>
+                        <small class="text-muted" x-text="'Rs. ' + parseFloat(item.unit_price).toFixed(2) + ' each'"></small>
                     </div>
                     <div class="d-flex align-items-center gap-1">
                         <button class="btn btn-sm btn-outline-secondary" style="width: 28px; height: 28px;"
@@ -286,7 +289,7 @@ function posApp() {
                         </button>
                     </div>
                     <div class="text-end" style="width: 80px;">
-                        <div class="fw-bold" x-text="'$' + (item.unit_price * item.quantity).toFixed(2)"></div>
+                        <div class="fw-bold" x-text="'Rs. ' + (item.unit_price * item.quantity).toFixed(2)"></div>
                         <button class="btn btn-sm text-danger p-0" @click="removeFromCart(index)">
                             <i class="bi bi-x-lg"></i> Remove
                         </button>
@@ -299,12 +302,12 @@ function posApp() {
         <div class="border-top p-3 pos-cart-summary">
             <div class="d-flex justify-content-between mb-1">
                 <span>Subtotal (<span x-text="cart.reduce((sum, item) => sum + item.quantity, 0)"></span> items)</span>
-                <span x-text="'$' + cartSubtotal.toFixed(2)"></span>
+                <span x-text="'Rs. ' + cartSubtotal.toFixed(2)"></span>
             </div>
             <div class="d-flex justify-content-between mb-1">
                 <span>Discount</span>
                 <div class="d-flex align-items-center gap-1">
-                    <span>$</span>
+                    <span>Rs. </span>
                     <input type="number" class="form-control form-control-sm text-end" style="width: 80px;"
                            x-model.number="discountAmount" min="0" step="0.01">
                 </div>
@@ -312,7 +315,7 @@ function posApp() {
             <hr class="my-2">
             <div class="d-flex justify-content-between fw-bold fs-5 mb-3">
                 <span>Total</span>
-                <span class="text-primary" x-text="'$' + cartTotal.toFixed(2)"></span>
+                <span class="text-primary" x-text="'Rs. ' + cartTotal.toFixed(2)"></span>
             </div>
 
             <button class="btn btn-primary btn-lg w-100" @click="openPaymentModal()"
@@ -371,16 +374,16 @@ function posApp() {
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span>Total Amount:</span>
-                                        <span class="fw-bold fs-5" x-text="'$' + cartTotal.toFixed(2)"></span>
+                                        <span class="fw-bold fs-5" x-text="'Rs. ' + cartTotal.toFixed(2)"></span>
                                     </div>
                                     <div class="d-flex justify-content-between mb-2">
                                         <span>Discount:</span>
-                                        <span x-text="'-$' + discountAmount.toFixed(2)"></span>
+                                        <span x-text="'-Rs. ' + discountAmount.toFixed(2)"></span>
                                     </div>
                                     <hr>
                                     <div class="d-flex justify-content-between fw-bold">
                                         <span>Amount Due:</span>
-                                        <span class="text-danger" x-text="'$' + cartTotal.toFixed(2)"></span>
+                                        <span class="text-danger" x-text="'Rs. ' + cartTotal.toFixed(2)"></span>
                                     </div>
                                 </div>
                             </div>
@@ -388,33 +391,33 @@ function posApp() {
                             <div class="mb-3">
                                 <label class="form-label">Amount Paid</label>
                                 <input type="number" class="form-control form-control-lg" x-model.number="paidAmount"
-                                       min="0" step="0.01" :placeholder="'Min: $' + cartTotal.toFixed(2)">
+                                       min="0" step="0.01" :placeholder="'Min: Rs. ' + cartTotal.toFixed(2)">
                             </div>
 
                             <div class="mb-3" x-show="paidAmount >= cartTotal">
                                 <label class="form-label">Change</label>
-                                <input type="text" class="form-control form-control-lg bg-success text-white"
-                                       :value="'$' + change.toFixed(2)" readonly>
+                                <input type="text" class="form-control form-control-lg text-success fw-bold"
+                                       :value="'Rs. ' + change.toFixed(2)" readonly>
                             </div>
 
                             <!-- Quick Amount Buttons -->
                             <div class="d-flex gap-2 mb-3 flex-wrap">
                                 <button class="btn btn-outline-secondary" @click="paidAmount = cartTotal"
-                                        x-text="'Exact: $' + cartTotal.toFixed(2)"></button>
+                                        x-text="'Exact: Rs. ' + cartTotal.toFixed(2)"></button>
                                 <button class="btn btn-outline-secondary" @click="paidAmount = Math.ceil(cartTotal)"
-                                        x-text="'Round: $' + Math.ceil(cartTotal).toFixed(2)"></button>
+                                        x-text="'Round: Rs. ' + Math.ceil(cartTotal).toFixed(2)"></button>
                                 <template x-for="quick in [10, 20, 50, 100]" :key="quick">
                                     <button class="btn btn-outline-secondary" @click="paidAmount = quick"
                                             x-show="quick >= cartTotal"
-                                            x-text="'$' + quick"></button>
+                                            x-text="'Rs. ' + quick"></button>
                                 </template>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @click="showPaymentModal = false">Cancel</button>
-                    <button type="button" class="btn btn-success btn-lg" @click="processPayment()"
+                    <button type="button" class="btn btn-outline-secondary" @click="showPaymentModal = false">Cancel</button>
+                    <button type="button" class="btn btn-primary btn-lg" @click="processPayment()"
                             :disabled="paidAmount < cartTotal">
                         <i class="bi bi-check-circle me-2"></i>Complete Sale
                     </button>

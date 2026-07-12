@@ -99,20 +99,20 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal:</span>
-                            <span id="subtotalDisplay">$0.00</span>
+                            <span id="subtotalDisplay">Rs. 0.00</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Discount:</span>
-                            <span id="discountDisplay">-$0.00</span>
+                            <span id="discountDisplay">-Rs. 0.00</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Tax:</span>
-                            <span id="taxDisplay">$0.00</span>
+                            <span id="taxDisplay">Rs. 0.00</span>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between fw-bold fs-5">
                             <span>Total:</span>
-                            <span id="totalDisplay">$0.00</span>
+                            <span id="totalDisplay">Rs. 0.00</span>
                         </div>
                     </div>
                 </div>
@@ -150,7 +150,7 @@ function addItem() {
         <td><input type="number" name="items[${itemCount}][quantity]" class="form-control form-control-sm" value="1" min="1" onchange="calculateRow(${itemCount})"></td>
         <td><input type="number" name="items[${itemCount}][unit_price]" class="form-control form-control-sm" value="0" step="0.01" onchange="calculateRow(${itemCount})"></td>
         <td><input type="number" name="items[${itemCount}][discount_amount]" class="form-control form-control-sm" value="0" step="0.01" onchange="calculateRow(${itemCount})"></td>
-        <td class="subtotal-cell fw-bold">$0.00</td>
+        <td class="subtotal-cell fw-bold">Rs. 0.00</td>
         <td><button type="button" class="btn btn-sm btn-outline-danger" onclick="removeItem(${itemCount})"><i class="bi bi-trash"></i></button></td>
     `;
     tbody.appendChild(row);
@@ -172,7 +172,7 @@ function calculateRow(index) {
     const price = parseFloat(row.querySelector('input[name$="[unit_price]"]').value) || 0;
     const discount = parseFloat(row.querySelector('input[name$="[discount_amount]"]').value) || 0;
     const subtotal = (qty * price) - discount;
-    row.querySelector('.subtotal-cell').textContent = '$' + subtotal.toFixed(2);
+    row.querySelector('.subtotal-cell').textContent = 'Rs. ' + subtotal.toFixed(2);
     calculateTotal();
 }
 
@@ -184,16 +184,16 @@ function removeItem(index) {
 function calculateTotal() {
     let subtotal = 0;
     document.querySelectorAll('.subtotal-cell').forEach(cell => {
-        subtotal += parseFloat(cell.textContent.replace('$', '')) || 0;
+        subtotal += parseFloat(cell.textContent.replace('Rs. ', '')) || 0;
     });
     const discount = parseFloat(document.querySelector('input[name="discount_amount"]').value) || 0;
     const tax = parseFloat(document.querySelector('input[name="tax_amount"]').value) || 0;
     const total = subtotal - discount + tax;
 
-    document.getElementById('subtotalDisplay').textContent = '$' + subtotal.toFixed(2);
-    document.getElementById('discountDisplay').textContent = '-$' + discount.toFixed(2);
-    document.getElementById('taxDisplay').textContent = '$' + tax.toFixed(2);
-    document.getElementById('totalDisplay').textContent = '$' + total.toFixed(2);
+    document.getElementById('subtotalDisplay').textContent = 'Rs. ' + subtotal.toFixed(2);
+    document.getElementById('discountDisplay').textContent = '-Rs. ' + discount.toFixed(2);
+    document.getElementById('taxDisplay').textContent = 'Rs. ' + tax.toFixed(2);
+    document.getElementById('totalDisplay').textContent = 'Rs. ' + total.toFixed(2);
 }
 
 // Add first item

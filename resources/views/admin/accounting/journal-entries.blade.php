@@ -80,8 +80,8 @@
                             <td>{{ $entry->entry_date }}</td>
                             <td><span class="badge bg-light text-dark">{{ ucfirst($entry->type) }}</span></td>
                             <td>{{ Str::limit($entry->description, 50) }}</td>
-                            <td class="text-end">${{ number_format($entry->total_debit, 2) }}</td>
-                            <td class="text-end">${{ number_format($entry->total_credit, 2) }}</td>
+                            <td class="text-end">Rs. {{ number_format($entry->total_debit, 2) }}</td>
+                            <td class="text-end">Rs. {{ number_format($entry->total_credit, 2) }}</td>
                             <td>
                                 @if($entry->status === 'posted')
                                     <span class="badge bg-success">Posted</span>

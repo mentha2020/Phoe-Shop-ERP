@@ -40,21 +40,21 @@
                         <tr>
                             <td>{{ $item['account_code'] }}</td>
                             <td>{{ $item['account_name'] }}</td>
-                            <td class="text-end">${{ number_format($item['debit'], 2) }}</td>
-                            <td class="text-end">${{ number_format($item['credit'], 2) }}</td>
+                            <td class="text-end">Rs. {{ number_format($item['debit'], 2) }}</td>
+                            <td class="text-end">Rs. {{ number_format($item['credit'], 2) }}</td>
                         </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
                         <tr class="table-primary">
                             <td colspan="2" class="text-end fw-bold">Total:</td>
-                            <td class="text-end fw-bold">${{ number_format($totalDebit, 2) }}</td>
-                            <td class="text-end fw-bold">${{ number_format($totalCredit, 2) }}</td>
+                            <td class="text-end fw-bold">Rs. {{ number_format($totalDebit, 2) }}</td>
+                            <td class="text-end fw-bold">Rs. {{ number_format($totalCredit, 2) }}</td>
                         </tr>
                         <tr class="{{ abs($totalDebit - $totalCredit) < 0.01 ? 'table-success' : 'table-danger' }}">
                             <td colspan="2" class="text-end fw-bold">Difference:</td>
                             <td colspan="2" class="text-center fw-bold">
-                                ${{ number_format(abs($totalDebit - $totalCredit), 2) }}
+                                Rs. {{ number_format(abs($totalDebit - $totalCredit), 2) }}
                                 {{ abs($totalDebit - $totalCredit) < 0.01 ? '(Balanced)' : '(Unbalanced!)' }}
                             </td>
                         </tr>

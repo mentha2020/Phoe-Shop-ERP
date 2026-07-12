@@ -163,7 +163,7 @@
                     </div>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-danger" onclick="return confirm('Are you absolutely sure? This cannot be undone.')">
                         <i class="bi bi-trash me-1"></i>Purge Logs
                     </button>

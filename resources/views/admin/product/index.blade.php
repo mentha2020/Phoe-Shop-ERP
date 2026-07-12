@@ -113,8 +113,8 @@
                                     <span class="text-muted">-</span>
                                 @endif
                             </td>
-                            <td>${{ number_format($product->purchase_price, 2) }}</td>
-                            <td>${{ number_format($product->selling_price, 2) }}</td>
+                            <td>Rs. {{ number_format($product->purchase_price, 2) }}</td>
+                            <td>Rs. {{ number_format($product->selling_price, 2) }}</td>
                             <td>
                                 @if($product->is_active)
                                     <span class="badge bg-success-subtle text-success"><i class="bi bi-check-circle me-1"></i>Active</span>

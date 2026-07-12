@@ -62,7 +62,7 @@
                     <hr>
                     <div class="text-center">
                         <h3 class="{{ $account->current_balance >= 0 ? 'text-success' : 'text-danger' }}">
-                            ${{ number_format($account->current_balance, 2) }}
+                            Rs. {{ number_format($account->current_balance, 2) }}
                         </h3>
                         <small class="text-muted">Current Balance</small>
                     </div>

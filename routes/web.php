@@ -166,6 +166,13 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/reports/sales', [ReportController::class, 'salesReport'])->name('reports.sales');
     Route::get('/reports/inventory', [ReportController::class, 'inventoryReport'])->name('reports.inventory');
     Route::get('/reports/financial', [ReportController::class, 'financialReport'])->name('reports.financial');
+    Route::get('/reports/purchases', [ReportController::class, 'purchaseReport'])->name('reports.purchases');
+    Route::get('/reports/customers', [ReportController::class, 'customerReport'])->name('reports.customers');
+    Route::get('/reports/expenses', [ReportController::class, 'expenseReport'])->name('reports.expenses');
+    Route::get('/reports/repairs', [ReportController::class, 'repairReport'])->name('reports.repairs');
+    Route::get('/reports/stock-movements', [ReportController::class, 'stockMovementReport'])->name('reports.stock_movements');
+    Route::get('/reports/suppliers', [ReportController::class, 'supplierReport'])->name('reports.suppliers');
+    Route::get('/reports/users', [ReportController::class, 'userReport'])->name('reports.users');
     // Backup & Restore
     Route::get('/backups', [BackupController::class, 'index'])->name('backups.index');
     Route::post('/backups', [BackupController::class, 'create'])->name('backups.create');

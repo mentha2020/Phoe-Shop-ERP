@@ -57,7 +57,7 @@
     <!-- Summary -->
     <div class="alert alert-info d-flex justify-content-between">
         <span>Total Expenses (filtered):</span>
-        <strong>${{ number_format($totalExpenses, 2) }}</strong>
+        <strong>Rs. {{ number_format($totalExpenses, 2) }}</strong>
     </div>
 
     <!-- Expenses Table -->
@@ -91,7 +91,7 @@
                             <td>{{ $expense->title }}</td>
                             <td><span class="badge bg-light text-dark">{{ $expense->category->name ?? '-' }}</span></td>
                             <td>{{ $expense->branch->name ?? '-' }}</td>
-                            <td class="text-end fw-bold">${{ number_format($expense->amount, 2) }}</td>
+                            <td class="text-end fw-bold">Rs. {{ number_format($expense->amount, 2) }}</td>
                             <td class="text-uppercase">{{ $expense->payment_method }}</td>
                             <td>
                                 @if($expense->status === 'approved')

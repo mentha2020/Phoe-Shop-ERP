@@ -89,10 +89,38 @@ class DashboardController extends Controller
             ->limit(10)
             ->get();
 
+        $chartLabels = [];
+        $chartRevenue = [];
+        $chartExpenses = [];
+        $chartProfit = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $month = now()->subMonths($i);
+            $chartLabels[] = $month->format('M Y');
+
+            $mRevenue = (float) Sale::where('status', 'completed')
+                ->whereYear('created_at', $month->year)
+                ->whereMonth('created_at', $month->month)
+                ->sum('total');
+            $chartRevenue[] = $mRevenue;
+
+            $mCOGS = (float) SaleItem::join('products', 'sale_items.product_id', '=', 'products.id')
+                ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
+                ->where('sales.status', 'completed')
+                ->whereYear('sales.created_at', $month->year)
+                ->whereMonth('sales.created_at', $month->month)
+                ->sum(DB::raw('sale_items.quantity * products.purchase_price'));
+            $mExpenses = (float) Expense::whereYear('created_at', $month->year)
+                ->whereMonth('created_at', $month->month)
+                ->sum('amount');
+            $chartExpenses[] = $mExpenses;
+            $chartProfit[] = $mRevenue - $mCOGS - $mExpenses;
+        }
+
         return view('dashboard', compact(
             'todaySales', 'monthRevenue', 'totalProducts', 'lowStockCount',
             'pendingRepairs', 'recentSales', 'topProducts', 'recentActivity',
-            'periodRevenue', 'periodCOGS', 'periodExpenses', 'periodProfit', 'range'
+            'periodRevenue', 'periodCOGS', 'periodExpenses', 'periodProfit', 'range',
+            'chartLabels', 'chartRevenue', 'chartExpenses', 'chartProfit'
         ));
     }
 }

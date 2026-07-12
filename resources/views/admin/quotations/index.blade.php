@@ -71,7 +71,7 @@
                             <td>{{ $quo->created_at->format('d M Y') }}</td>
                             <td>{{ $quo->customer->name ?? 'Walk-in' }}</td>
                             <td>{{ $quo->valid_until ? \Carbon\Carbon::parse($quo->valid_until)->format('d M Y') : '-' }}</td>
-                            <td class="text-end fw-bold">${{ number_format($quo->total, 2) }}</td>
+                            <td class="text-end fw-bold">Rs. {{ number_format($quo->total, 2) }}</td>
                             <td>
                                 @php
                                     $badgeClass = match($quo->status) {

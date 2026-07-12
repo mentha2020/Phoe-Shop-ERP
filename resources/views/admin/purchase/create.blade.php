@@ -21,7 +21,7 @@
     <div class="row g-4">
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-white border-bottom"><h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Order Details</h5></div>
+                <div class="card-header border-bottom"><h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Order Details</h5></div>
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -67,14 +67,14 @@
             </div>
 
             <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                <div class="card-header border-bottom d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i>Order Items</h5>
                     <button type="button" class="btn btn-sm btn-outline-primary" onclick="addItem()"><i class="bi bi-plus me-1"></i>Add Item</button>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover mb-0" id="itemsTable">
-                            <thead class="bg-light">
+                            <thead class="border-bottom">
                                 <tr>
                                     <th class="ps-3" style="width:40%">Product</th>
                                     <th>Qty</th>
@@ -95,12 +95,12 @@
                                     </td>
                                     <td><input type="number" name="items[0][quantity]" class="form-control form-control-sm" min="1" value="1" required oninput="calcRow(this)"></td>
                                     <td><div class="input-group input-group-sm"><span class="input-group-text">$</span><input type="number" step="0.01" name="items[0][unit_cost]" class="form-control" min="0" value="0.00" required oninput="calcRow(this)"></div></td>
-                                    <td class="fw-bold row-total">$0.00</td>
+                                    <td class="fw-bold row-total">Rs. 0.00</td>
                                     <td><button type="button" class="btn btn-sm btn-outline-danger" onclick="removeItem(this)"><i class="bi bi-trash"></i></button></td>
                                 </tr>
                             </tbody>
                             <tfoot>
-                                <tr><td colspan="3" class="text-end fw-bold">Subtotal:</td><td colspan="2" class="fw-bold" id="subtotal">$0.00</td></tr>
+                                <tr><td colspan="3" class="text-end fw-bold">Subtotal:</td><td colspan="2" class="fw-bold" id="subtotal">Rs. 0.00</td></tr>
                             </tfoot>
                         </table>
                     </div>
@@ -121,7 +121,7 @@
                     <hr>
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Create Purchase Order</button>
-                        <a href="{{ route('admin.purchase-orders.index') }}" class="btn btn-light">Cancel</a>
+                        <a href="{{ route('admin.purchase-orders.index') }}" class="btn btn-outline-secondary">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -142,7 +142,7 @@ function addItem() {
         else if (el.name.includes('quantity')) el.value = '1';
         else el.value = '0.00';
     });
-    row.querySelector('.row-total').textContent = '$0.00';
+    row.querySelector('.row-total').textContent = 'Rs. 0.00';
     tbody.appendChild(row);
     itemIndex++;
     calcTotal();
@@ -161,13 +161,13 @@ function calcRow(el) {
     const row = el.closest('tr');
     const qty = parseFloat(row.querySelector('[name*="quantity"]').value) || 0;
     const cost = parseFloat(row.querySelector('[name*="unit_cost"]').value) || 0;
-    row.querySelector('.row-total').textContent = '$' + (qty * cost).toFixed(2);
+    row.querySelector('.row-total').textContent = 'Rs. ' + (qty * cost).toFixed(2);
     calcTotal();
 }
 function calcTotal() {
     let total = 0;
-    document.querySelectorAll('.row-total').forEach(td => { total += parseFloat(td.textContent.replace('$','')) || 0; });
-    document.getElementById('subtotal').textContent = '$' + total.toFixed(2);
+    document.querySelectorAll('.row-total').forEach(td => { total += parseFloat(td.textContent.replace('Rs. ','')) || 0; });
+    document.getElementById('subtotal').textContent = 'Rs. ' + total.toFixed(2);
 }
 </script>
 @endpush

@@ -89,9 +89,9 @@
                                         <small class="text-muted">{{ $item->product_sku }}</small>
                                     </td>
                                     <td class="text-center">{{ $item->quantity }}</td>
-                                    <td class="text-end">${{ number_format($item->unit_price, 2) }}</td>
-                                    <td class="text-end">${{ number_format($item->discount_amount, 2) }}</td>
-                                    <td class="text-end fw-bold">${{ number_format($item->subtotal, 2) }}</td>
+                                    <td class="text-end">Rs. {{ number_format($item->unit_price, 2) }}</td>
+                                    <td class="text-end">Rs. {{ number_format($item->discount_amount, 2) }}</td>
+                                    <td class="text-end fw-bold">Rs. {{ number_format($item->subtotal, 2) }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -146,15 +146,15 @@
 
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between mb-2"><span>Subtotal:</span><span>${{ number_format($quotation->subtotal, 2) }}</span></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Subtotal:</span><span>Rs. {{ number_format($quotation->subtotal, 2) }}</span></div>
                     @if($quotation->discount_amount > 0)
-                    <div class="d-flex justify-content-between mb-2 text-success"><span>Discount:</span><span>-${{ number_format($quotation->discount_amount, 2) }}</span></div>
+                    <div class="d-flex justify-content-between mb-2 text-success"><span>Discount:</span><span>-Rs. {{ number_format($quotation->discount_amount, 2) }}</span></div>
                     @endif
                     @if($quotation->tax_amount > 0)
-                    <div class="d-flex justify-content-between mb-2"><span>Tax:</span><span>${{ number_format($quotation->tax_amount, 2) }}</span></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Tax:</span><span>Rs. {{ number_format($quotation->tax_amount, 2) }}</span></div>
                     @endif
                     <hr>
-                    <div class="d-flex justify-content-between fw-bold fs-5"><span>Total:</span><span>${{ number_format($quotation->total, 2) }}</span></div>
+                    <div class="d-flex justify-content-between fw-bold fs-5"><span>Total:</span><span>Rs. {{ number_format($quotation->total, 2) }}</span></div>
                 </div>
             </div>
         </div>

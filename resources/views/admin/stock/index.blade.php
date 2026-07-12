@@ -46,7 +46,7 @@
                         <i class="bi bi-currency-dollar text-success fs-4"></i>
                     </div>
                     <div>
-                        <div class="fs-4 fw-bold">${{ number_format($totalValue, 2) }}</div>
+                        <div class="fs-4 fw-bold">Rs. {{ number_format($totalValue, 2) }}</div>
                         <div class="text-muted small">Total Stock Value</div>
                     </div>
                 </div>
@@ -222,7 +222,7 @@
                     </div>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Update</button>
                 </div>
             </form>

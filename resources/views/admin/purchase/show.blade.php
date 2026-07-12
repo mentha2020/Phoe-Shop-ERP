@@ -34,7 +34,7 @@
 <div class="row g-4">
     <div class="col-lg-8">
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white border-bottom"><h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Order Details</h5></div>
+            <div class="card-header border-bottom"><h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Order Details</h5></div>
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-3">
@@ -67,11 +67,11 @@
         </div>
 
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white border-bottom"><h5 class="mb-0"><i class="bi bi-list-ul me-2"></i>Order Items</h5></div>
+            <div class="card-header border-bottom"><h5 class="mb-0"><i class="bi bi-list-ul me-2"></i>Order Items</h5></div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
-                        <thead class="bg-light">
+                        <thead class="border-bottom">
                             <tr>
                                 <th class="ps-3">Product</th>
                                 <th>Ordered</th>
@@ -97,8 +97,8 @@
                                             <span class="text-success"><i class="bi bi-check-circle"></i></span>
                                         @endif
                                     </td>
-                                    <td>${{ number_format($item->unit_cost, 2) }}</td>
-                                    <td class="fw-bold">${{ number_format($item->total_cost, 2) }}</td>
+                                    <td>Rs. {{ number_format($item->unit_cost, 2) }}</td>
+                                    <td class="fw-bold">Rs. {{ number_format($item->total_cost, 2) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -110,25 +110,25 @@
 
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white border-bottom"><h5 class="mb-0"><i class="bi bi-calculator me-2"></i>Summary</h5></div>
+            <div class="card-header border-bottom"><h5 class="mb-0"><i class="bi bi-calculator me-2"></i>Summary</h5></div>
             <div class="card-body">
-                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Subtotal:</span><span>${{ number_format($order->subtotal, 2) }}</span></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Subtotal:</span><span>Rs. {{ number_format($order->subtotal, 2) }}</span></div>
                 @if($order->tax_amount > 0)
-                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Tax ({{ $order->tax_rate }}%):</span><span>${{ number_format($order->tax_amount, 2) }}</span></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Tax ({{ $order->tax_rate }}%):</span><span>Rs. {{ number_format($order->tax_amount, 2) }}</span></div>
                 @endif
                 @if($order->discount_amount > 0)
-                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Discount:</span><span class="text-danger">-${{ number_format($order->discount_amount, 2) }}</span></div>
+                    <div class="d-flex justify-content-between mb-2"><span class="text-muted">Discount:</span><span class="text-danger">-Rs. {{ number_format($order->discount_amount, 2) }}</span></div>
                 @endif
                 <hr>
-                <div class="d-flex justify-content-between mb-3"><span class="fw-bold">Total:</span><span class="fs-5 fw-bold">${{ number_format($order->total_amount, 2) }}</span></div>
-                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Paid:</span><span class="text-success">${{ number_format($order->paid_amount, 2) }}</span></div>
-                <div class="d-flex justify-content-between"><span class="fw-bold">Balance Due:</span><span class="fs-5 fw-bold {{ $order->balance > 0 ? 'text-danger' : 'text-success' }}">${{ number_format($order->balance, 2) }}</span></div>
+                <div class="d-flex justify-content-between mb-3"><span class="fw-bold">Total:</span><span class="fs-5 fw-bold">Rs. {{ number_format($order->total_amount, 2) }}</span></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Paid:</span><span class="text-success">Rs. {{ number_format($order->paid_amount, 2) }}</span></div>
+                <div class="d-flex justify-content-between"><span class="fw-bold">Balance Due:</span><span class="fs-5 fw-bold {{ $order->balance > 0 ? 'text-danger' : 'text-success' }}">Rs. {{ number_format($order->balance, 2) }}</span></div>
             </div>
         </div>
 
         @if($order->balance > 0 && !in_array($order->status, ['cancelled']))
             <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-white border-bottom"><h5 class="mb-0"><i class="bi bi-cash me-2"></i>Record Payment</h5></div>
+                <div class="card-header border-bottom"><h5 class="mb-0"><i class="bi bi-cash me-2"></i>Record Payment</h5></div>
                 <div class="card-body">
                     <form action="{{ route('admin.purchase-orders.payment', $order) }}" method="POST">
                         @csrf
@@ -158,13 +158,13 @@
 
         @if($order->payments->count() > 0)
             <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-white border-bottom"><h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Payment History</h5></div>
+                <div class="card-header border-bottom"><h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Payment History</h5></div>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         @foreach($order->payments as $payment)
                             <div class="list-group-item">
                                 <div class="d-flex justify-content-between">
-                                    <div><span class="fw-medium">${{ number_format($payment->amount, 2) }}</span><br><small class="text-muted">{{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }} - {{ $payment->payment_date->format('M d, Y') }}</small></div>
+                                    <div><span class="fw-medium">Rs. {{ number_format($payment->amount, 2) }}</span><br><small class="text-muted">{{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }} - {{ $payment->payment_date->format('M d, Y') }}</small></div>
                                     <small class="text-muted">{{ $payment->reference_number }}</small>
                                 </div>
                             </div>
@@ -189,10 +189,10 @@
                 <div class="modal-body">
                     <p class="text-muted">Enter the quantity received for each item. Stock will be updated automatically.</p>
                     @foreach($order->items->where('quantity_pending', '>', 0) as $item)
-                        <div class="d-flex align-items-center gap-3 mb-3 p-3 bg-light rounded">
+                        <div class="d-flex align-items-center gap-3 mb-3 p-3 border rounded">
                             <div class="flex-grow-1">
                                 <div class="fw-medium">{{ $item->product->name }}</div>
-                                <small class="text-muted">Pending: {{ $item->quantity_pending }} | Cost: ${{ number_format($item->unit_cost, 2) }}</small>
+                                <small class="text-muted">Pending: {{ $item->quantity_pending }} | Cost: Rs. {{ number_format($item->unit_cost, 2) }}</small>
                             </div>
                             <input type="hidden" name="items[{{ $loop->index }}][id]" value="{{ $item->id }}">
                             <input type="number" name="items[{{ $loop->index }}][quantity]" class="form-control form-control-sm" style="width: 100px;" min="1" max="{{ $item->quantity_pending }}" value="{{ $item->quantity_pending }}" required>
@@ -200,7 +200,7 @@
                     @endforeach
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Confirm Receipt</button>
                 </div>
             </form>

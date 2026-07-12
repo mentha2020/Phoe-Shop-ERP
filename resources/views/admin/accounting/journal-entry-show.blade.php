@@ -51,16 +51,16 @@
                                     <td>{{ $item->account_code }}</td>
                                     <td>{{ $item->account_name }}</td>
                                     <td>{{ $item->description ?? '-' }}</td>
-                                    <td class="text-end">{{ $item->debit > 0 ? '$' . number_format($item->debit, 2) : '-' }}</td>
-                                    <td class="text-end">{{ $item->credit > 0 ? '$' . number_format($item->credit, 2) : '-' }}</td>
+                                    <td class="text-end">{{ $item->debit > 0 ? 'Rs. ' . number_format($item->debit, 2) : '-' }}</td>
+                                    <td class="text-end">{{ $item->credit > 0 ? 'Rs. ' . number_format($item->credit, 2) : '-' }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr class="table-primary">
                                     <td colspan="3" class="text-end fw-bold">Totals:</td>
-                                    <td class="text-end fw-bold">${{ number_format($entry->total_debit, 2) }}</td>
-                                    <td class="text-end fw-bold">${{ number_format($entry->total_credit, 2) }}</td>
+                                    <td class="text-end fw-bold">Rs. {{ number_format($entry->total_debit, 2) }}</td>
+                                    <td class="text-end fw-bold">Rs. {{ number_format($entry->total_credit, 2) }}</td>
                                 </tr>
                             </tfoot>
                         </table>

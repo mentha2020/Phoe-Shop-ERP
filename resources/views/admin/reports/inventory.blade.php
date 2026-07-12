@@ -45,7 +45,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="text-muted">Stock Value</h6>
-                    <h3 class="text-success">${{ number_format($totalStockValue, 2) }}</h3>
+                    <h3 class="text-success">Rs. {{ number_format($totalStockValue, 2) }}</h3>
                 </div>
             </div>
         </div>

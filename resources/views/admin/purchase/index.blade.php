@@ -18,7 +18,7 @@
 </div>
 
 <div class="card border-0 shadow-sm mb-4">
-    <div class="card-header bg-white border-bottom">
+    <div class="card-header border-bottom">
         <form action="{{ route('admin.purchase-orders.index') }}" method="GET" class="row g-3 align-items-end">
             <div class="col-md-3">
                 <label class="form-label small text-muted">Search</label>
@@ -53,7 +53,7 @@
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light">
+                <thead class="border-bottom">
                     <tr>
                         <th class="ps-3">Reference</th>
                         <th>Date</th>
@@ -74,12 +74,12 @@
                             <td>{{ $order->order_date->format('M d, Y') }}</td>
                             <td>{{ $order->supplier->name }}</td>
                             <td>{{ $order->branch->name }}</td>
-                            <td class="fw-bold">${{ number_format($order->total_amount, 2) }}</td>
+                            <td class="fw-bold">Rs. {{ number_format($order->total_amount, 2) }}</td>
                             <td>
                                 @if($order->paid_amount > 0)
-                                    <span class="text-success">${{ number_format($order->paid_amount, 2) }}</span>
+                                    <span class="text-success">Rs. {{ number_format($order->paid_amount, 2) }}</span>
                                 @else
-                                    <span class="text-muted">$0.00</span>
+                                    <span class="text-muted">Rs. 0.00</span>
                                 @endif
                             </td>
                             <td><span class="badge bg-{{ $order->status_badge }}-subtle text-{{ $order->status_badge }}">{{ ucfirst($order->status) }}</span></td>

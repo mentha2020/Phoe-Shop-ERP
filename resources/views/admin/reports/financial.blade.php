@@ -36,7 +36,7 @@
             <div class="card border-0 shadow-sm bg-success text-white">
                 <div class="card-body">
                     <h6>Revenue (Sales)</h6>
-                    <h2>${{ number_format($totalRevenue, 2) }}</h2>
+                    <h2>Rs. {{ number_format($totalRevenue, 2) }}</h2>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
             <div class="card border-0 shadow-sm bg-danger text-white">
                 <div class="card-body">
                     <h6>Cost of Goods Sold</h6>
-                    <h2>${{ number_format($totalCOGS, 2) }}</h2>
+                    <h2>Rs. {{ number_format($totalCOGS, 2) }}</h2>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
             <div class="card border-0 shadow-sm bg-warning">
                 <div class="card-body">
                     <h6>Operating Expenses</h6>
-                    <h2>${{ number_format($totalExpenses, 2) }}</h2>
+                    <h2>Rs. {{ number_format($totalExpenses, 2) }}</h2>
                 </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
             <div class="card border-0 shadow-sm {{ $netProfit >= 0 ? 'bg-primary' : 'bg-danger' }} text-white">
                 <div class="card-body">
                     <h6>Net Profit</h6>
-                    <h2>${{ number_format($netProfit, 2) }}</h2>
+                    <h2>Rs. {{ number_format($netProfit, 2) }}</h2>
                     <small>{{ $netProfit >= 0 ? 'Profitable' : 'Loss' }}</small>
                 </div>
             </div>
@@ -74,23 +74,23 @@
             <table class="table">
                 <tr>
                     <td class="fw-bold">Total Revenue</td>
-                    <td class="text-end">${{ number_format($totalRevenue, 2) }}</td>
+                    <td class="text-end">Rs. {{ number_format($totalRevenue, 2) }}</td>
                 </tr>
                 <tr>
                     <td>Less: Cost of Goods Sold</td>
-                    <td class="text-end text-danger">-${{ number_format($totalCOGS, 2) }}</td>
+                    <td class="text-end text-danger">-Rs. {{ number_format($totalCOGS, 2) }}</td>
                 </tr>
                 <tr class="table-light">
                     <td class="fw-bold">Gross Profit</td>
-                    <td class="text-end fw-bold">${{ number_format($grossProfit, 2) }}</td>
+                    <td class="text-end fw-bold">Rs. {{ number_format($grossProfit, 2) }}</td>
                 </tr>
                 <tr>
                     <td>Less: Operating Expenses</td>
-                    <td class="text-end text-danger">-${{ number_format($totalExpenses, 2) }}</td>
+                    <td class="text-end text-danger">-Rs. {{ number_format($totalExpenses, 2) }}</td>
                 </tr>
                 <tr class="{{ $netProfit >= 0 ? 'table-success' : 'table-danger' }}">
                     <td class="fw-bold fs-5">Net Profit</td>
-                    <td class="text-end fw-bold fs-5">${{ number_format($netProfit, 2) }}</td>
+                    <td class="text-end fw-bold fs-5">Rs. {{ number_format($netProfit, 2) }}</td>
                 </tr>
             </table>
         </div>
@@ -110,7 +110,7 @@
                             <tr>
                                 <td>{{ $month->month }}</td>
                                 <td class="text-center">{{ $month->count }}</td>
-                                <td class="text-end fw-bold">${{ number_format($month->revenue, 2) }}</td>
+                                <td class="text-end fw-bold">Rs. {{ number_format($month->revenue, 2) }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -131,7 +131,7 @@
                     @foreach($expenseByCategory as $cat)
                     <div class="d-flex justify-content-between align-items-center {{ !$loop->last ? 'border-bottom py-2' : 'pt-2' }}">
                         <span>{{ $cat->name }}</span>
-                        <span class="fw-bold">${{ number_format($cat->total, 2) }}</span>
+                        <span class="fw-bold">Rs. {{ number_format($cat->total, 2) }}</span>
                     </div>
                     @endforeach
                     @else

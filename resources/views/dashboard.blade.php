@@ -8,7 +8,7 @@
         <h4 class="fw-bold mb-1">Dashboard</h4>
         <p class="text-muted mb-0">Welcome back, {{ auth()->user()->name }}!</p>
     </div>
-    <div class="d-flex gap-2">
+    <div class="d-flex gap-2 align-items-center">
         @php
             $ranges = [
                 'today' => 'Today',
@@ -37,7 +37,7 @@
                         <i class="bi bi-cart-check"></i>
                     </div>
                     <div>
-                        <div class="card-stat-value">${{ number_format($todaySales, 2) }}</div>
+                        <div class="card-stat-value">Rs. {{ number_format($todaySales, 2) }}</div>
                         <div class="card-stat-label">Sales Today</div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                         <i class="bi bi-currency-dollar"></i>
                     </div>
                     <div>
-                        <div class="card-stat-value">${{ number_format($monthRevenue, 2) }}</div>
+                        <div class="card-stat-value">Rs. {{ number_format($monthRevenue, 2) }}</div>
                         <div class="card-stat-label">Revenue This Month</div>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                         </div>
                     </div>
                     <div>
-                        <div class="card-stat-value" style="color: #10b981;">${{ number_format($periodRevenue, 2) }}</div>
+                        <div class="card-stat-value" style="color: #10b981;">Rs. {{ number_format($periodRevenue, 2) }}</div>
                         <div class="card-stat-label">Revenue</div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
                         </div>
                     </div>
                     <div>
-                        <div class="card-stat-value" style="color: #f59e0b;">${{ number_format($periodCOGS, 2) }}</div>
+                        <div class="card-stat-value" style="color: #f59e0b;">Rs. {{ number_format($periodCOGS, 2) }}</div>
                         <div class="card-stat-label">Cost of Goods</div>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                         </div>
                     </div>
                     <div>
-                        <div class="card-stat-value" style="color: #ef4444;">${{ number_format($periodExpenses, 2) }}</div>
+                        <div class="card-stat-value" style="color: #ef4444;">Rs. {{ number_format($periodExpenses, 2) }}</div>
                         <div class="card-stat-label">Expenses</div>
                     </div>
                 </div>
@@ -166,10 +166,34 @@
                         </div>
                     </div>
                     <div>
-                        <div class="card-stat-value" style="color: {{ $periodProfit >= 0 ? '#4f46e5' : '#ef4444' }};">${{ number_format($periodProfit, 2) }}</div>
+                        <div class="card-stat-value" style="color: {{ $periodProfit >= 0 ? '#4f46e5' : '#ef4444' }};">Rs. {{ number_format($periodProfit, 2) }}</div>
                         <div class="card-stat-label">Profit / Loss</div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Revenue vs Expenses Chart --}}
+<div class="row g-4 mb-4">
+    <div class="col-xl-6">
+        <div class="card h-100">
+            <div class="card-header bg-transparent border-0">
+                <h6 class="card-title fw-bold mb-0">Revenue vs Expenses (Last 12 Months)</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="revenueExpensesChart" height="120"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6">
+        <div class="card h-100">
+            <div class="card-header bg-transparent border-0">
+                <h6 class="card-title fw-bold mb-0">Profit vs Expenses (Last 12 Months)</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="profitExpensesChart" height="120"></canvas>
             </div>
         </div>
     </div>
@@ -199,7 +223,7 @@
                                 <tr>
                                     <td><a href="{{ route('admin.sales.show', $sale->id) }}" class="text-decoration-none">{{ $sale->invoice_number }}</a></td>
                                     <td>{{ $sale->customer?->name ?? 'Walk-in' }}</td>
-                                    <td>${{ number_format($sale->total, 2) }}</td>
+                                    <td>Rs. {{ number_format($sale->total, 2) }}</td>
                                     <td><span class="badge bg-{{ $sale->status === 'completed' ? 'success' : ($sale->status === 'cancelled' ? 'danger' : 'warning') }}">{{ ucfirst($sale->status) }}</span></td>
                                 </tr>
                             @empty
@@ -233,7 +257,7 @@
                                 <tr>
                                     <td>{{ $item->product?->name ?? 'N/A' }}</td>
                                     <td>{{ $item->total_sold }}</td>
-                                    <td>${{ number_format($item->total_revenue, 2) }}</td>
+                                    <td>Rs. {{ number_format($item->total_revenue, 2) }}</td>
                                 </tr>
                             @empty
                                 <tr><td colspan="3" class="text-center text-muted py-4">No products sold yet</td></tr>
@@ -250,6 +274,49 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const labels = {!! json_encode($chartLabels) !!};
+    const revenue = {!! json_encode($chartRevenue) !!};
+    const expenses = {!! json_encode($chartExpenses) !!};
+    const profit = {!! json_encode($chartProfit) !!};
+
+    const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)';
+    const textColor = isDark ? '#94a3b8' : '#64748b';
+
+    const sharedOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { intersect: false, mode: 'index' },
+        plugins: { legend: { labels: { color: textColor, usePointStyle: true, padding: 16 } } },
+        scales: {
+            x: { ticks: { color: textColor, maxRotation: 45 }, grid: { color: gridColor } },
+            y: { ticks: { color: textColor, callback: v => 'Rs. ' + v.toLocaleString() }, grid: { color: gridColor } }
+        }
+    };
+
+    new Chart(document.getElementById('revenueExpensesChart'), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [
+                { label: 'Revenue', data: revenue, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.4, pointRadius: 3 },
+                { label: 'Expenses', data: expenses, borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', fill: true, tension: 0.4, pointRadius: 3 }
+            ]
+        },
+        options: sharedOptions
+    });
+
+    new Chart(document.getElementById('profitExpensesChart'), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [
+                { label: 'Profit', data: profit, borderColor: '#4f46e5', backgroundColor: 'rgba(79,70,229,0.1)', fill: true, tension: 0.4, pointRadius: 3 },
+                { label: 'Expenses', data: expenses, borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', fill: true, tension: 0.4, pointRadius: 3 }
+            ]
+        },
+        options: sharedOptions
+    });
 });
 </script>
 @endpush

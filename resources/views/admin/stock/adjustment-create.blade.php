@@ -120,7 +120,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check-lg me-1"></i>Save Adjustment
                         </button>
-                        <a href="{{ route('admin.stock-adjustments.index') }}" class="btn btn-light">Cancel</a>
+                        <a href="{{ route('admin.stock-adjustments.index') }}" class="btn btn-outline-secondary">Cancel</a>
                     </div>
                 </div>
             </div>

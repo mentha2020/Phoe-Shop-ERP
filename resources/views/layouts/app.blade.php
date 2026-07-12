@@ -27,28 +27,30 @@
                 @endif
         </div>
 
-        <div class="sidebar-menu">
-            <div x-data="{ open: @json(request()->routeIs('admin.dashboard')) }">
-                <button @click="open = !open" class="menu-header w-100 text-start">
-                    <span>Main</span>
-                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
-                </button>
-                <ul class="list-unstyled mb-0" x-show="open" x-transition>
-                <li class="menu-item">
-                    <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                        <i class="bi bi-grid-1x2-fill"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                </ul>
+        <div class="sidebar-menu" x-data="{ openGroup: '{{ match(true) {
+            request()->routeIs('admin.pos.*', 'admin.sales.*', 'admin.quotations.*') => 'pos',
+            request()->routeIs('admin.products.*', 'admin.stock.*', 'admin.stock-transfers.*', 'admin.stock-adjustments.*') => 'inventory',
+            request()->routeIs('admin.purchase-orders.*', 'admin.suppliers.*') => 'purchasing',
+            request()->routeIs('admin.repairs.*') => 'repairs',
+            request()->routeIs('admin.accounting.*', 'admin.expenses.*') => 'finance',
+            request()->routeIs('admin.reports.*') => 'reports',
+            request()->routeIs('admin.customers.*', 'admin.brands.*', 'admin.categories.*', 'admin.branches.*') => 'master',
+            request()->routeIs('admin.users.*', 'admin.roles.*', 'admin.activity-log') => 'admin',
+            default => ''
+        } }}' }">
+            <div class="menu-item">
+                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <i class="bi bi-grid-1x2-fill"></i>
+                    <span>Dashboard</span>
+                </a>
             </div>
 
-            <div x-data="{ open: @json(request()->routeIs('admin.pos.*') || request()->routeIs('admin.sales.*') || request()->routeIs('admin.quotations.*')) }">
-                <button @click="open = !open" class="menu-header w-100 text-start">
+            <div class="menu-group">
+                <button @click="openGroup = openGroup === 'pos' ? '' : 'pos'" class="menu-header w-100 text-start">
                     <span>Point of Sale</span>
-                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" :class="openGroup === 'pos' ? 'rotate-open' : 'rotate-closed'"></i></span>
                 </button>
-                <ul class="list-unstyled mb-0" x-show="open" x-transition>
+                <ul class="list-unstyled mb-0" x-show="openGroup === 'pos'" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.pos.index') }}" class="{{ request()->routeIs('admin.pos.*') ? 'active' : '' }}">
                         <i class="bi bi-cart3"></i>
@@ -70,12 +72,12 @@
                 </ul>
             </div>
 
-            <div x-data="{ open: @json(request()->routeIs('admin.products.*') || request()->routeIs('admin.stock.*') || request()->routeIs('admin.stock-transfers.*') || request()->routeIs('admin.stock-adjustments.*')) }">
-                <button @click="open = !open" class="menu-header w-100 text-start">
+            <div class="menu-group">
+                <button @click="openGroup = openGroup === 'inventory' ? '' : 'inventory'" class="menu-header w-100 text-start">
                     <span>Inventory</span>
-                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" :class="openGroup === 'inventory' ? 'rotate-open' : 'rotate-closed'"></i></span>
                 </button>
-                <ul class="list-unstyled mb-0" x-show="open" x-transition>
+                <ul class="list-unstyled mb-0" x-show="openGroup === 'inventory'" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
                         <i class="bi bi-box-seam"></i>
@@ -106,12 +108,12 @@
                 </ul>
             </div>
 
-            <div x-data="{ open: @json(request()->routeIs('admin.purchase-orders.*') || request()->routeIs('admin.suppliers.*')) }">
-                <button @click="open = !open" class="menu-header w-100 text-start">
+            <div class="menu-group">
+                <button @click="openGroup = openGroup === 'purchasing' ? '' : 'purchasing'" class="menu-header w-100 text-start">
                     <span>Purchasing</span>
-                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" :class="openGroup === 'purchasing' ? 'rotate-open' : 'rotate-closed'"></i></span>
                 </button>
-                <ul class="list-unstyled mb-0" x-show="open" x-transition>
+                <ul class="list-unstyled mb-0" x-show="openGroup === 'purchasing'" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.purchase-orders.index') }}" class="{{ request()->routeIs('admin.purchase-orders.*') ? 'active' : '' }}">
                         <i class="bi bi-bag-check"></i>
@@ -127,12 +129,12 @@
                 </ul>
             </div>
 
-            <div x-data="{ open: @json(request()->routeIs('admin.repairs.*')) }">
-                <button @click="open = !open" class="menu-header w-100 text-start">
+            <div class="menu-group">
+                <button @click="openGroup = openGroup === 'repairs' ? '' : 'repairs'" class="menu-header w-100 text-start">
                     <span>Repairs</span>
-                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" :class="openGroup === 'repairs' ? 'rotate-open' : 'rotate-closed'"></i></span>
                 </button>
-                <ul class="list-unstyled mb-0" x-show="open" x-transition>
+                <ul class="list-unstyled mb-0" x-show="openGroup === 'repairs'" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.repairs.index') }}" class="{{ request()->routeIs('admin.repairs.*') ? 'active' : '' }}">
                         <i class="bi bi-tools"></i>
@@ -142,12 +144,12 @@
                 </ul>
             </div>
 
-            <div x-data="{ open: @json(request()->routeIs('admin.accounting.*') || request()->routeIs('admin.expenses.*')) }">
-                <button @click="open = !open" class="menu-header w-100 text-start">
+            <div class="menu-group">
+                <button @click="openGroup = openGroup === 'finance' ? '' : 'finance'" class="menu-header w-100 text-start">
                     <span>Finance</span>
-                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" :class="openGroup === 'finance' ? 'rotate-open' : 'rotate-closed'"></i></span>
                 </button>
-                <ul class="list-unstyled mb-0" x-show="open" x-transition>
+                <ul class="list-unstyled mb-0" x-show="openGroup === 'finance'" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.accounting.index') }}" class="{{ request()->routeIs('admin.accounting.*') ? 'active' : '' }}">
                         <i class="bi bi-calculator"></i>
@@ -163,27 +165,81 @@
                 </ul>
             </div>
 
-            <div x-data="{ open: @json(request()->routeIs('admin.reports.*')) }">
-                <button @click="open = !open" class="menu-header w-100 text-start">
+            <div class="menu-group">
+                <button @click="openGroup = openGroup === 'reports' ? '' : 'reports'" class="menu-header w-100 text-start">
                     <span>Reports</span>
-                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" :class="openGroup === 'reports' ? 'rotate-open' : 'rotate-closed'"></i></span>
                 </button>
-                <ul class="list-unstyled mb-0" x-show="open" x-transition>
+                <ul class="list-unstyled mb-0" x-show="openGroup === 'reports'" x-transition>
                 <li class="menu-item">
-                    <a href="{{ route('admin.reports.sales') }}" class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
-                        <i class="bi bi-graph-up"></i>
-                        <span>Reports</span>
+                    <a href="{{ route('admin.reports.sales') }}" class="{{ request()->routeIs('admin.reports.sales') ? 'active' : '' }}">
+                        <i class="bi bi-receipt"></i>
+                        <span>Sales</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.reports.purchases') }}" class="{{ request()->routeIs('admin.reports.purchases') ? 'active' : '' }}">
+                        <i class="bi bi-bag-check"></i>
+                        <span>Purchases</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.reports.inventory') }}" class="{{ request()->routeIs('admin.reports.inventory') ? 'active' : '' }}">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Inventory</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.reports.customers') }}" class="{{ request()->routeIs('admin.reports.customers') ? 'active' : '' }}">
+                        <i class="bi bi-people"></i>
+                        <span>Customers</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.reports.suppliers') }}" class="{{ request()->routeIs('admin.reports.suppliers') ? 'active' : '' }}">
+                        <i class="bi bi-truck"></i>
+                        <span>Suppliers</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.reports.expenses') }}" class="{{ request()->routeIs('admin.reports.expenses') ? 'active' : '' }}">
+                        <i class="bi bi-cash-stack"></i>
+                        <span>Expenses</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.reports.repairs') }}" class="{{ request()->routeIs('admin.reports.repairs') ? 'active' : '' }}">
+                        <i class="bi bi-tools"></i>
+                        <span>Repairs</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.reports.stock_movements') }}" class="{{ request()->routeIs('admin.reports.stock_movements') ? 'active' : '' }}">
+                        <i class="bi bi-arrow-left-right"></i>
+                        <span>Stock Movements</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.reports.users') }}" class="{{ request()->routeIs('admin.reports.users') ? 'active' : '' }}">
+                        <i class="bi bi-person-badge"></i>
+                        <span>User Performance</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.reports.financial') }}" class="{{ request()->routeIs('admin.reports.financial') ? 'active' : '' }}">
+                        <i class="bi bi-calculator"></i>
+                        <span>Financial</span>
                     </a>
                 </li>
                 </ul>
             </div>
 
-            <div x-data="{ open: @json(request()->routeIs('admin.customers.*') || request()->routeIs('admin.brands.*') || request()->routeIs('admin.categories.*') || request()->routeIs('admin.branches.*')) }">
-                <button @click="open = !open" class="menu-header w-100 text-start">
+            <div class="menu-group">
+                <button @click="openGroup = openGroup === 'master' ? '' : 'master'" class="menu-header w-100 text-start">
                     <span>Master Data</span>
-                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" :class="openGroup === 'master' ? 'rotate-open' : 'rotate-closed'"></i></span>
                 </button>
-                <ul class="list-unstyled mb-0" x-show="open" x-transition>
+                <ul class="list-unstyled mb-0" x-show="openGroup === 'master'" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.customers.index') }}" class="{{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
                         <i class="bi bi-people"></i>
@@ -212,12 +268,12 @@
             </div>
 
             @can('users.view')
-            <div x-data="{ open: @json(request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.activity-log')) }">
-                <button @click="open = !open" class="menu-header w-100 text-start">
+            <div class="menu-group">
+                <button @click="openGroup = openGroup === 'admin' ? '' : 'admin'" class="menu-header w-100 text-start">
                     <span>Administration</span>
-                    <span class="menu-chevron"><i class="bi bi-chevron-down" x-show="open"></i><i class="bi bi-chevron-end" x-show="!open"></i></span>
+                    <span class="menu-chevron"><i class="bi bi-chevron-down" :class="openGroup === 'admin' ? 'rotate-open' : 'rotate-closed'"></i></span>
                 </button>
-                <ul class="list-unstyled mb-0" x-show="open" x-transition>
+                <ul class="list-unstyled mb-0" x-show="openGroup === 'admin'" x-transition>
                 <li class="menu-item">
                     <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                         <i class="bi bi-person-gear"></i>
@@ -272,6 +328,11 @@
                 <button class="btn btn-link position-relative me-2" onclick="toggleTheme()" title="Toggle Theme">
                     <i class="bi bi-moon-stars fs-5 d-none" id="themeIconLight"></i>
                     <i class="bi bi-sun fs-5" id="themeIconDark"></i>
+                </button>
+
+                {{-- Fullscreen --}}
+                <button class="btn btn-link position-relative me-2" onclick="toggleFullScreen()" title="Fullscreen">
+                    <i class="bi bi-arrows-fullscreen fs-5"></i>
                 </button>
 
                 {{-- Notifications --}}

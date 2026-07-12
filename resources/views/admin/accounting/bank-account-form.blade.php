@@ -64,7 +64,7 @@
                             @if(isset($account))
                             <div class="col-md-6">
                                 <label class="form-label">Current Balance</label>
-                                <input type="text" class="form-control" value="${{ number_format($account->current_balance, 2) }}" readonly>
+                                <input type="text" class="form-control" value="Rs. {{ number_format($account->current_balance, 2) }}" readonly>
                                 <small class="text-muted">Balance is managed through journal entries</small>
                             </div>
                             <div class="col-md-6">

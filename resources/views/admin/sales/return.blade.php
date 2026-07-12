@@ -65,8 +65,8 @@
                                                    style="width: 80px; display: inline-block;"
                                                    onchange="calculateReturn()" disabled>
                                         </td>
-                                        <td class="text-end">${{ number_format($item->unit_price, 2) }}</td>
-                                        <td class="text-end return-amount">$0.00</td>
+                                        <td class="text-end">Rs. {{ number_format($item->unit_price, 2) }}</td>
+                                        <td class="text-end return-amount">Rs. 0.00</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -86,7 +86,7 @@
                     <div class="card-footer d-flex justify-content-between align-items-center">
                         <div>
                             <span class="text-muted">Total Return Amount: </span>
-                            <span class="fw-bold fs-5" id="totalReturn">$0.00</span>
+                            <span class="fw-bold fs-5" id="totalReturn">Rs. 0.00</span>
                         </div>
                         <button type="submit" class="btn btn-warning btn-lg" id="submitBtn" disabled>
                             <i class="bi bi-arrow-return-left me-1"></i>Process Return
@@ -117,11 +117,11 @@
                         </tr>
                         <tr>
                             <td class="text-muted">Total</td>
-                            <td class="fw-bold">${{ number_format($sale->total, 2) }}</td>
+                            <td class="fw-bold">Rs. {{ number_format($sale->total, 2) }}</td>
                         </tr>
                         <tr>
                             <td class="text-muted">Paid</td>
-                            <td>${{ number_format($sale->paid_amount, 2) }}</td>
+                            <td>Rs. {{ number_format($sale->paid_amount, 2) }}</td>
                         </tr>
                     </table>
                 </div>
@@ -162,10 +162,10 @@ function calculateReturn() {
         const price = parseFloat(cb.dataset.price);
         const qty = parseInt(row.querySelector('.qty-input').value) || 0;
         const amount = price * qty;
-        row.querySelector('.return-amount').textContent = '$' + amount.toFixed(2);
+        row.querySelector('.return-amount').textContent = 'Rs. ' + amount.toFixed(2);
         total += amount;
     });
-    document.getElementById('totalReturn').textContent = '$' + total.toFixed(2);
+    document.getElementById('totalReturn').textContent = 'Rs. ' + total.toFixed(2);
     document.getElementById('submitBtn').disabled = total <= 0;
 }
 </script>

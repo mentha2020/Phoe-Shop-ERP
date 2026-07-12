@@ -10,6 +10,10 @@
                 </div>
                 <div class="card-body" id="receipt-content">
                     <div class="text-center mb-3">
+                        @php $receiptLogo = \App\Models\Setting::get('logo'); @endphp
+                        @if($receiptLogo)
+                            <img src="{{ asset('storage/' . $receiptLogo) }}" alt="Logo" style="max-height: 80px; margin-bottom: 10px;">
+                        @endif
                         <h5>{{ config('app.name', 'Phone Shop ERP') }}</h5>
                         <small class="text-muted">{{ $sale->branch->name ?? 'Main Branch' }}</small><br>
                         <small class="text-muted">{{ $sale->branch->address ?? '' }}</small><br>
@@ -53,8 +57,8 @@
                                     <small class="text-muted">{{ $item->product_sku }}</small>
                                 </td>
                                 <td class="text-center">{{ $item->quantity }}</td>
-                                <td class="text-end">${{ number_format($item->unit_price, 2) }}</td>
-                                <td class="text-end">${{ number_format($item->subtotal, 2) }}</td>
+                                <td class="text-end">Rs. {{ number_format($item->unit_price, 2) }}</td>
+                                <td class="text-end">Rs. {{ number_format($item->subtotal, 2) }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -63,24 +67,24 @@
 
                     <div class="d-flex justify-content-between mb-1">
                         <span>Subtotal:</span>
-                        <span>${{ number_format($sale->subtotal, 2) }}</span>
+                        <span>Rs. {{ number_format($sale->subtotal, 2) }}</span>
                     </div>
                     @if($sale->discount_amount > 0)
                     <div class="d-flex justify-content-between mb-1 text-success">
                         <span>Discount:</span>
-                        <span>-${{ number_format($sale->discount_amount, 2) }}</span>
+                        <span>-Rs. {{ number_format($sale->discount_amount, 2) }}</span>
                     </div>
                     @endif
                     @if($sale->tax_amount > 0)
                     <div class="d-flex justify-content-between mb-1">
                         <span>Tax:</span>
-                        <span>${{ number_format($sale->tax_amount, 2) }}</span>
+                        <span>Rs. {{ number_format($sale->tax_amount, 2) }}</span>
                     </div>
                     @endif
                     <hr>
                     <div class="d-flex justify-content-between fw-bold fs-5 mb-3">
                         <span>Total:</span>
-                        <span>${{ number_format($sale->total, 2) }}</span>
+                        <span>Rs. {{ number_format($sale->total, 2) }}</span>
                     </div>
 
                     <div class="d-flex justify-content-between mb-1">
@@ -89,12 +93,12 @@
                     </div>
                     <div class="d-flex justify-content-between mb-1">
                         <span>Amount Paid:</span>
-                        <span>${{ number_format($sale->paid_amount, 2) }}</span>
+                        <span>Rs. {{ number_format($sale->paid_amount, 2) }}</span>
                     </div>
                     @if($sale->change_amount > 0)
                     <div class="d-flex justify-content-between mb-1 text-success">
                         <span>Change:</span>
-                        <span>${{ number_format($sale->change_amount, 2) }}</span>
+                        <span>Rs. {{ number_format($sale->change_amount, 2) }}</span>
                     </div>
                     @endif
 

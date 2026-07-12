@@ -74,8 +74,8 @@
                             </td>
                             <td>{{ $repair->customer->name ?? 'Walk-in' }}</td>
                             <td><small>{{ Str::limit($repair->issue_description, 50) }}</small></td>
-                            <td class="text-end">${{ number_format($repair->estimated_cost, 2) }}</td>
-                            <td class="text-end">${{ number_format($repair->deposit_amount, 2) }}</td>
+                            <td class="text-end">Rs. {{ number_format($repair->estimated_cost, 2) }}</td>
+                            <td class="text-end">Rs. {{ number_format($repair->deposit_amount, 2) }}</td>
                             <td>{{ $repair->assignedTo->name ?? '-' }}</td>
                             <td><span class="badge {{ $repair->status_badge_class }}">{{ $repair->status_label }}</span></td>
                             <td>

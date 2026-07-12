@@ -140,7 +140,7 @@
                 <div class="card-body">
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Update Product</button>
-                        <a href="{{ route('admin.products.index') }}" class="btn btn-light">Cancel</a>
+                        <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary">Cancel</a>
                     </div>
                 </div>
             </div>

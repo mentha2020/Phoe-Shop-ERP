@@ -25,7 +25,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="text-muted">Total Sales</h6>
-                    <h3 class="text-primary">${{ number_format($totalSales, 2) }}</h3>
+                    <h3 class="text-primary">Rs. {{ number_format($totalSales, 2) }}</h3>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="text-muted">Total Paid</h6>
-                    <h3 class="text-success">${{ number_format($totalPaid, 2) }}</h3>
+                    <h3 class="text-success">Rs. {{ number_format($totalPaid, 2) }}</h3>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="text-muted">Total Refunded</h6>
-                    <h3 class="text-warning">${{ number_format($totalRefunded, 2) }}</h3>
+                    <h3 class="text-warning">Rs. {{ number_format($totalRefunded, 2) }}</h3>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="text-muted">Balance Due</h6>
-                    <h3 class="{{ $balance > 0 ? 'text-danger' : 'text-success' }}">${{ number_format($balance, 2) }}</h3>
+                    <h3 class="{{ $balance > 0 ? 'text-danger' : 'text-success' }}">Rs. {{ number_format($balance, 2) }}</h3>
                 </div>
             </div>
         </div>
@@ -100,7 +100,7 @@
                                 @endif
                             </td>
                             <td class="text-end fw-bold {{ $payment->type === 'refund' ? 'text-danger' : 'text-success' }}">
-                                {{ $payment->type === 'refund' ? '-' : '' }}${{ number_format($payment->amount, 2) }}
+                                {{ $payment->type === 'refund' ? '-' : '' }}Rs. {{ number_format($payment->amount, 2) }}
                             </td>
                             <td><small class="text-muted">{{ $payment->notes ?? '-' }}</small></td>
                         </tr>

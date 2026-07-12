@@ -41,7 +41,7 @@
                         </div>
                         <div>
                             <h6 class="text-muted mb-1">Total Amount</h6>
-                            <h4 class="mb-0">${{ number_format($totalAmount, 2) }}</h4>
+                            <h4 class="mb-0">Rs. {{ number_format($totalAmount, 2) }}</h4>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                         </div>
                         <div>
                             <h6 class="text-muted mb-1">Total Paid</h6>
-                            <h4 class="mb-0">${{ number_format($totalPaid, 2) }}</h4>
+                            <h4 class="mb-0">Rs. {{ number_format($totalPaid, 2) }}</h4>
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                         </div>
                         <div>
                             <h6 class="text-muted mb-1">Outstanding</h6>
-                            <h4 class="mb-0">${{ number_format($totalAmount - $totalPaid, 2) }}</h4>
+                            <h4 class="mb-0">Rs. {{ number_format($totalAmount - $totalPaid, 2) }}</h4>
                         </div>
                     </div>
                 </div>
@@ -156,8 +156,8 @@
                             <td>{{ $sale->created_at->format('d M Y H:i') }}</td>
                             <td>{{ $sale->customer->name ?? 'Walk-in' }}</td>
                             <td>{{ $sale->branch->name ?? '-' }}</td>
-                            <td class="text-end fw-bold">${{ number_format($sale->total, 2) }}</td>
-                            <td class="text-end">${{ number_format($sale->paid_amount, 2) }}</td>
+                            <td class="text-end fw-bold">Rs. {{ number_format($sale->total, 2) }}</td>
+                            <td class="text-end">Rs. {{ number_format($sale->paid_amount, 2) }}</td>
                             <td><span class="badge bg-info text-dark text-uppercase">{{ $sale->payment_method }}</span></td>
                             <td>
                                 @if($sale->status === 'completed')

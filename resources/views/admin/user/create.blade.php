@@ -134,7 +134,7 @@
             </div>
 
             <div class="d-flex justify-content-end gap-2">
-                <a href="{{ route('admin.users.index') }}" class="btn btn-light">Cancel</a>
+                <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">Cancel</a>
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-check-lg me-1"></i>Create User
                 </button>

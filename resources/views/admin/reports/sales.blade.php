@@ -53,7 +53,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="text-muted">Total Revenue</h6>
-                    <h3 class="text-success">${{ number_format($totalRevenue, 2) }}</h3>
+                    <h3 class="text-success">Rs. {{ number_format($totalRevenue, 2) }}</h3>
                 </div>
             </div>
         </div>
@@ -61,7 +61,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="text-muted">Avg Sale Value</h6>
-                    <h3>${{ number_format($avgSaleValue, 2) }}</h3>
+                    <h3>Rs. {{ number_format($avgSaleValue, 2) }}</h3>
                 </div>
             </div>
         </div>
@@ -69,7 +69,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="text-muted">Collected</h6>
-                    <h3 class="text-info">${{ number_format($totalPaid, 2) }}</h3>
+                    <h3 class="text-info">Rs. {{ number_format($totalPaid, 2) }}</h3>
                 </div>
             </div>
         </div>
@@ -90,7 +90,7 @@
                                 <tr>
                                     <td>{{ $day['date'] }}</td>
                                     <td class="text-center">{{ $day['count'] }}</td>
-                                    <td class="text-end fw-bold">${{ number_format($day['total'], 2) }}</td>
+                                    <td class="text-end fw-bold">Rs. {{ number_format($day['total'], 2) }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -114,7 +114,7 @@
                             <div class="fw-semibold">{{ $pm['method'] }}</div>
                             <small class="text-muted">{{ $pm['count'] }} sales</small>
                         </div>
-                        <div class="text-end fw-bold">${{ number_format($pm['total'], 2) }}</div>
+                        <div class="text-end fw-bold">Rs. {{ number_format($pm['total'], 2) }}</div>
                     </div>
                     @endforeach
                 </div>
@@ -136,7 +136,7 @@
                             <td>{{ $index + 1 }}</td>
                             <td class="fw-semibold">{{ $product->product_name }}</td>
                             <td class="text-center">{{ $product->total_qty }}</td>
-                            <td class="text-end fw-bold">${{ number_format($product->total_revenue, 2) }}</td>
+                            <td class="text-end fw-bold">Rs. {{ number_format($product->total_revenue, 2) }}</td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -24,6 +24,15 @@ window.toggleTheme = function() {
     localStorage.setItem('theme', next);
 };
 
+// Fullscreen toggle
+window.toggleFullScreen = function() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
+};
+
 // Sidebar toggle
 window.toggleSidebar = function() {
     document.body.classList.toggle('sidebar-collapsed');

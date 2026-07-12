@@ -115,7 +115,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check-lg me-1"></i>Create Transfer
                         </button>
-                        <a href="{{ route('admin.stock-transfers.index') }}" class="btn btn-light">Cancel</a>
+                        <a href="{{ route('admin.stock-transfers.index') }}" class="btn btn-outline-secondary">Cancel</a>
                     </div>
                 </div>
             </div>

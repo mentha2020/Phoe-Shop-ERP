@@ -94,8 +94,8 @@
                                 <tr>
                                     <td>{{ $part->part_name }}</td>
                                     <td class="text-center">{{ $part->quantity }}</td>
-                                    <td class="text-end">${{ number_format($part->unit_cost, 2) }}</td>
-                                    <td class="text-end fw-bold">${{ number_format($part->selling_price, 2) }}</td>
+                                    <td class="text-end">Rs. {{ number_format($part->unit_cost, 2) }}</td>
+                                    <td class="text-end fw-bold">Rs. {{ number_format($part->selling_price, 2) }}</td>
                                     <td>
                                         <form action="{{ route('admin.repairs.part.remove', $part->id) }}" method="POST"
                                               onsubmit="return confirm('Remove this part?')">
@@ -109,7 +109,7 @@
                             <tfoot>
                                 <tr class="table-primary">
                                     <td colspan="3" class="text-end fw-bold">Parts Total:</td>
-                                    <td class="text-end fw-bold">${{ number_format($repair->parts_total, 2) }}</td>
+                                    <td class="text-end fw-bold">Rs. {{ number_format($repair->parts_total, 2) }}</td>
                                     <td></td>
                                 </tr>
                             </tfoot>
@@ -176,12 +176,12 @@
                     <h5 class="mb-0">Cost Summary</h5>
                 </div>
                 <div class="card-body">
-                    <div class="d-flex justify-content-between mb-2"><span>Estimated:</span><span>${{ number_format($repair->estimated_cost, 2) }}</span></div>
-                    <div class="d-flex justify-content-between mb-2"><span>Parts:</span><span>${{ number_format($repair->parts_total, 2) }}</span></div>
-                    <div class="d-flex justify-content-between mb-2"><span>Final Cost:</span><span class="fw-bold">${{ number_format($repair->final_cost, 2) }}</span></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Estimated:</span><span>Rs. {{ number_format($repair->estimated_cost, 2) }}</span></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Parts:</span><span>Rs. {{ number_format($repair->parts_total, 2) }}</span></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Final Cost:</span><span class="fw-bold">Rs. {{ number_format($repair->final_cost, 2) }}</span></div>
                     <hr>
-                    <div class="d-flex justify-content-between mb-2"><span>Deposit:</span><span class="text-success">${{ number_format($repair->deposit_amount, 2) }}</span></div>
-                    <div class="d-flex justify-content-between fw-bold"><span>Balance:</span><span class="{{ $repair->balance > 0 ? 'text-danger' : 'text-success' }}">${{ number_format($repair->balance, 2) }}</span></div>
+                    <div class="d-flex justify-content-between mb-2"><span>Deposit:</span><span class="text-success">Rs. {{ number_format($repair->deposit_amount, 2) }}</span></div>
+                    <div class="d-flex justify-content-between fw-bold"><span>Balance:</span><span class="{{ $repair->balance > 0 ? 'text-danger' : 'text-success' }}">Rs. {{ number_format($repair->balance, 2) }}</span></div>
                     @if($repair->balance > 0 && !in_array($repair->status, ['delivered', 'cancelled']))
                     <form action="{{ route('admin.repairs.deposit', $repair->id) }}" method="POST" class="mt-3">
                         @csrf

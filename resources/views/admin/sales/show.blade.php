@@ -51,32 +51,32 @@
                                         <small class="text-muted">{{ $item->product_sku }}</small>
                                     </td>
                                     <td class="text-center">{{ $item->quantity }}</td>
-                                    <td class="text-end">${{ number_format($item->unit_price, 2) }}</td>
-                                    <td class="text-end">${{ number_format($item->discount_amount, 2) }}</td>
-                                    <td class="text-end fw-bold">${{ number_format($item->subtotal, 2) }}</td>
+                                    <td class="text-end">Rs. {{ number_format($item->unit_price, 2) }}</td>
+                                    <td class="text-end">Rs. {{ number_format($item->discount_amount, 2) }}</td>
+                                    <td class="text-end fw-bold">Rs. {{ number_format($item->subtotal, 2) }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <td colspan="4" class="text-end">Subtotal:</td>
-                                    <td class="text-end">${{ number_format($sale->subtotal, 2) }}</td>
+                                    <td class="text-end">Rs. {{ number_format($sale->subtotal, 2) }}</td>
                                 </tr>
                                 @if($sale->discount_amount > 0)
                                 <tr class="text-success">
                                     <td colspan="4" class="text-end">Discount:</td>
-                                    <td class="text-end">-${{ number_format($sale->discount_amount, 2) }}</td>
+                                    <td class="text-end">-Rs. {{ number_format($sale->discount_amount, 2) }}</td>
                                 </tr>
                                 @endif
                                 @if($sale->tax_amount > 0)
                                 <tr>
                                     <td colspan="4" class="text-end">Tax:</td>
-                                    <td class="text-end">${{ number_format($sale->tax_amount, 2) }}</td>
+                                    <td class="text-end">Rs. {{ number_format($sale->tax_amount, 2) }}</td>
                                 </tr>
                                 @endif
                                 <tr class="table-primary">
                                     <td colspan="4" class="text-end fw-bold">Total:</td>
-                                    <td class="text-end fw-bold">${{ number_format($sale->total, 2) }}</td>
+                                    <td class="text-end fw-bold">Rs. {{ number_format($sale->total, 2) }}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -116,7 +116,7 @@
                                 <tr>
                                     <td>{{ $item->product->name ?? 'N/A' }}</td>
                                     <td class="text-center">{{ $item->quantity }}</td>
-                                    <td class="text-end">${{ number_format($item->subtotal, 2) }}</td>
+                                    <td class="text-end">Rs. {{ number_format($item->subtotal, 2) }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -182,22 +182,22 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">
                         <span>Total:</span>
-                        <span class="fw-bold">${{ number_format($sale->total, 2) }}</span>
+                        <span class="fw-bold">Rs. {{ number_format($sale->total, 2) }}</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Paid:</span>
-                        <span class="text-success">${{ number_format($sale->paid_amount, 2) }}</span>
+                        <span class="text-success">Rs. {{ number_format($sale->paid_amount, 2) }}</span>
                     </div>
                     @if($sale->balance > 0)
                     <div class="d-flex justify-content-between mb-2">
                         <span>Balance Due:</span>
-                        <span class="text-danger">${{ number_format($sale->balance, 2) }}</span>
+                        <span class="text-danger">Rs. {{ number_format($sale->balance, 2) }}</span>
                     </div>
                     @endif
                     @if($sale->change_amount > 0)
                     <div class="d-flex justify-content-between mb-2">
                         <span>Change Given:</span>
-                        <span>${{ number_format($sale->change_amount, 2) }}</span>
+                        <span>Rs. {{ number_format($sale->change_amount, 2) }}</span>
                     </div>
                     @endif
                 </div>
