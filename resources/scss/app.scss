@@ -387,6 +387,12 @@ $transition-speed: 0.3s;
 
     td {
         vertical-align: middle;
+        overflow: hidden;
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
     }
 }
 
