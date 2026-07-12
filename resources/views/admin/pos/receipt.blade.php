@@ -15,7 +15,6 @@
                             <img src="{{ asset('storage/' . $receiptLogo) }}" alt="Logo" style="max-height: 80px; margin-bottom: 10px;">
                         @endif
                         <h5>{{ config('app.name', 'Phone Shop ERP') }}</h5>
-                        <small class="text-muted">{{ $sale->branch->name ?? 'Main Branch' }}</small><br>
                         <small class="text-muted">{{ $sale->branch->address ?? '' }}</small><br>
                         <small class="text-muted">Tel: {{ $sale->branch->phone ?? '' }}</small>
                     </div>
