@@ -145,21 +145,27 @@
                 </div>
             </div>
 
-            <div class="card border-0 shadow-sm border-danger">
-                <div class="card-header bg-white border-bottom">
-                    <h5 class="mb-0 text-danger"><i class="bi bi-exclamation-triangle me-2"></i>Danger Zone</h5>
-                </div>
-                <div class="card-body">
-                    <p class="text-muted small mb-3">Deleting a product will remove all associated data.</p>
-                    <form action="{{ route('admin.products.destroy', $product) }}" method="POST" onsubmit="return confirm('Delete this product? This cannot be undone.')">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn btn-outline-danger w-100"><i class="bi bi-trash me-1"></i>Delete Product</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 </form>
+
+<div class="row g-4 mt-0">
+    <div class="col-lg-8"></div>
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm border-danger">
+            <div class="card-header bg-white border-bottom">
+                <h5 class="mb-0 text-danger"><i class="bi bi-exclamation-triangle me-2"></i>Danger Zone</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small mb-3">Deleting a product will remove all associated data.</p>
+                <form action="{{ route('admin.products.destroy', $product) }}" method="POST" onsubmit="return confirm('Delete this product? This cannot be undone.')">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="btn btn-outline-danger w-100"><i class="bi bi-trash me-1"></i>Delete Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
