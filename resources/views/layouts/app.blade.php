@@ -58,12 +58,14 @@
                         <span>POS</span>
                     </a>
                 </li>
+                @can('sales.view')
                 <li class="menu-item">
                     <a href="{{ route('admin.sales.index') }}" class="{{ request()->routeIs('admin.sales.*') ? 'active' : '' }}">
                         <i class="bi bi-receipt"></i>
                         <span>Sales</span>
                     </a>
                 </li>
+                @endcan
                 <li class="menu-item">
                     <a href="{{ route('admin.quotations.index') }}" class="{{ request()->routeIs('admin.quotations.*') ? 'active' : '' }}">
                         <i class="bi bi-file-earmark-text"></i>
@@ -81,12 +83,15 @@
                     <span class="menu-chevron"><i class="bi bi-chevron-down" :class="openGroup === 'inventory' ? 'rotate-open' : 'rotate-closed'"></i></span>
                 </button>
                 <ul class="list-unstyled mb-0" x-show="openGroup === 'inventory'" x-transition>
+                @can('products.view')
                 <li class="menu-item">
                     <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
                         <i class="bi bi-box-seam"></i>
                         <span>Products</span>
                     </a>
                 </li>
+                @endcan
+                @can('inventory.view')
                 <li class="menu-item">
                     <a href="{{ route('admin.stock.index') }}" class="{{ request()->routeIs('admin.stock.*') ? 'active' : '' }}">
                         <i class="bi bi-stack"></i>
@@ -108,6 +113,7 @@
                         <span>Adjustments</span>
                     </a>
                 </li>
+                @endcan
                 </ul>
             </div>
             @endcanany
@@ -159,18 +165,22 @@
                     <span class="menu-chevron"><i class="bi bi-chevron-down" :class="openGroup === 'finance' ? 'rotate-open' : 'rotate-closed'"></i></span>
                 </button>
                 <ul class="list-unstyled mb-0" x-show="openGroup === 'finance'" x-transition>
+                @can('accounting.view')
                 <li class="menu-item">
                     <a href="{{ route('admin.accounting.index') }}" class="{{ request()->routeIs('admin.accounting.*') ? 'active' : '' }}">
                         <i class="bi bi-calculator"></i>
                         <span>Accounting</span>
                     </a>
                 </li>
+                @endcan
+                @can('expenses.view')
                 <li class="menu-item">
                     <a href="{{ route('admin.expenses.index') }}" class="{{ request()->routeIs('admin.expenses.*') ? 'active' : '' }}">
                         <i class="bi bi-cash-stack"></i>
                         <span>Expenses</span>
                     </a>
                 </li>
+                @endcan
                 </ul>
             </div>
             @endcanany
@@ -253,30 +263,38 @@
                     <span class="menu-chevron"><i class="bi bi-chevron-down" :class="openGroup === 'master' ? 'rotate-open' : 'rotate-closed'"></i></span>
                 </button>
                 <ul class="list-unstyled mb-0" x-show="openGroup === 'master'" x-transition>
+                @can('customers.view')
                 <li class="menu-item">
                     <a href="{{ route('admin.customers.index') }}" class="{{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
                         <i class="bi bi-people"></i>
                         <span>Customers</span>
                     </a>
                 </li>
+                @endcan
+                @can('brands.view')
                 <li class="menu-item">
                     <a href="{{ route('admin.brands.index') }}" class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}">
                         <i class="bi bi-bookmark"></i>
                         <span>Brands</span>
                     </a>
                 </li>
+                @endcan
+                @can('categories.view')
                 <li class="menu-item">
                     <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                         <i class="bi bi-tags"></i>
                         <span>Categories</span>
                     </a>
                 </li>
+                @endcan
+                @can('branches.view')
                 <li class="menu-item">
                     <a href="{{ route('admin.branches.index') }}" class="{{ request()->routeIs('admin.branches.*') ? 'active' : '' }}">
                         <i class="bi bi-building"></i>
                         <span>Branches</span>
                     </a>
                 </li>
+                @endcan
                 </ul>
             </div>
             @endcanany
