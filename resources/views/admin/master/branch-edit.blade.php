@@ -111,22 +111,28 @@
                 </div>
             </div>
 
-            <div class="card glass mt-4 border-danger">
-                <div class="card-header bg-transparent border-0 py-3">
-                    <h6 class="card-title fw-bold mb-0 text-danger">Danger Zone</h6>
-                </div>
-                <div class="card-body">
-                    <p class="text-muted small mb-3">Deleting a branch will remove all associated data. This action cannot be undone.</p>
-                    <form action="{{ route('admin.branches.destroy', $branch) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this branch? This action cannot be undone.')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-outline-danger w-100">
-                            <i class="bi bi-trash me-1"></i>Delete Branch
-                        </button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 </form>
+
+<div class="row g-4 mt-0">
+    <div class="col-lg-8"></div>
+    <div class="col-lg-4">
+        <div class="card glass mt-4 border-danger">
+            <div class="card-header bg-transparent border-0 py-3">
+                <h6 class="card-title fw-bold mb-0 text-danger">Danger Zone</h6>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small mb-3">Deleting a branch will remove all associated data. This action cannot be undone.</p>
+                <form action="{{ route('admin.branches.destroy', $branch) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this branch? This action cannot be undone.')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-outline-danger w-100">
+                        <i class="bi bi-trash me-1"></i>Delete Branch
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
