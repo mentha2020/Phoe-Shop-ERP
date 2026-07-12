@@ -35,8 +35,14 @@ window.toggleFullScreen = function() {
 
 // Sidebar toggle
 window.toggleSidebar = function() {
-    document.body.classList.toggle('sidebar-collapsed');
-    localStorage.setItem('sidebar-collapsed', document.body.classList.contains('sidebar-collapsed'));
+    const isMobile = window.innerWidth < 992;
+    if (isMobile) {
+        document.getElementById('sidebar').classList.toggle('show');
+        document.getElementById('sidebarOverlay').classList.toggle('show');
+    } else {
+        document.body.classList.toggle('sidebar-collapsed');
+        localStorage.setItem('sidebar-collapsed', document.body.classList.contains('sidebar-collapsed'));
+    }
 };
 
 // Initialize sidebar state
