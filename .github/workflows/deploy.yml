@@ -69,7 +69,7 @@ jobs:
           SESSION_LIFETIME=120
           SESSION_ENCRYPT=false
           SESSION_PATH=/
-          SESSION_DOMAIN=chajare.monaralk.com
+          SESSION_DOMAIN=
           SESSION_SECURE_COOKIE=true
           SESSION_HTTP_ONLY=true
           SESSION_SAME_SITE=lax
